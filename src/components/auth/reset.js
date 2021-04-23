@@ -14,7 +14,7 @@ class reset extends Component {
                             <Form size='large'>
                                 <Segment stacked>
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
-                                    <Form.Input fluid icon='lock' iconPosition='left' placeholder='Reset code' />
+                                    <Form.Input fluid icon='file code' iconPosition='left' placeholder='Reset code' />
                                     <Form.Input
                                         fluid
                                         icon='lock'

@@ -1,7 +1,8 @@
 import './App.css';
-import { Switch, Route } from "react-router-dom";
+import { Redirect, Switch, Route } from "react-router-dom";
 import login from './components/auth/login';
 import reset from './components/auth/reset';
+import ICT_Dashboard from './components/dashboard/ict';
 
 function App() {
   return (
@@ -9,6 +10,15 @@ function App() {
       <Switch>
         <Route exact path="/" component={login} />
         <Route exact path="/reset" component={reset} />
+        
+        <Route exact path={["/ict", "/dashboard", "/customers"]}>
+          <Redirect to='/ict/dashboard'/>
+        </Route>
+        <Route exact path="/ict/*" component={ICT_Dashboard} />
+        
+        <Route path="/*">
+          <Redirect to='/'/>
+        </Route>
       </Switch>
     </main>
   );

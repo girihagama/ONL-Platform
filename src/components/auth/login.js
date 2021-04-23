@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Container, Button, Form, Grid, Header, Image, Message, Segment, Select } from 'semantic-ui-react';
 
 class login extends Component {
     render() {
@@ -13,13 +13,24 @@ class login extends Component {
       </Header>
                             <Form size='large'>
                                 <Segment stacked>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
+                                    <Form.Input fluid required type='email' icon='user' iconPosition='left' placeholder='E-mail address' />
                                     <Form.Input
                                         fluid
+                                        required
                                         icon='lock'
                                         iconPosition='left'
                                         placeholder='Password'
                                         type='password'
+                                    />
+                                    <Form.Field
+                                        control={Select}
+                                        required                                        
+                                        value='ict'
+                                        options={[
+                                            { key: 'ict', text: 'ICT', value: 'ict' },
+                                            { key: 'technical', text: 'Technical', value: 'technical' }
+                                        ]}
+                                        placeholder='Select Patform'
                                     />
 
                                     <Button color='teal' fluid size='large'>
