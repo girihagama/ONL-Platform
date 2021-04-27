@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container, Button, Form, Grid, Header, Image, Message, Segment, Select } from 'semantic-ui-react';
+import { loginSystem } from '../../store/actions/authActions';
 
 class login extends Component {
+    state = {
+        username: '',
+        password: '',
+        platform: 'ict'
+    }
+
+    handleSubmit = () => {
+        console.log('Submitted', this.state);
+        this.props.loginSystem(this.state.username, this.state.password, this.state.platform);
+    }
+
     render() {
+        console.log('STATE', this.state);
+        console.log('PROPS', this.props);
+
         return (
             <div>
                 <Container>
@@ -11,9 +27,18 @@ class login extends Component {
                             <Header as='h2' color='teal' textAlign='center'>
                                 <Image src='/logo.png' /> Log-in to your platform account
       </Header>
-                            <Form size='large'>
+                            <Form size='large' onSubmit={this.handleSubmit}>
                                 <Segment stacked>
-                                    <Form.Input fluid required type='email' icon='user' iconPosition='left' placeholder='E-mail address' />
+                                    <Form.Input
+                                        fluid
+                                        required
+                                        type='email'
+                                        icon='user'
+                                        iconPosition='left'
+                                        placeholder='E-mail address'
+                                        value={this.state.username}
+                                        onChange={e => { this.setState({ username: e.target.value }) }}
+                                    />
                                     <Form.Input
                                         fluid
                                         required
@@ -21,21 +46,24 @@ class login extends Component {
                                         iconPosition='left'
                                         placeholder='Password'
                                         type='password'
+                                        value={this.state.password}
+                                        onChange={e => { this.setState({ password: e.target.value }) }}
                                     />
                                     <Form.Field
                                         control={Select}
-                                        required                                        
-                                        value='ict'
+                                        required
+                                        value={this.state.platform}
                                         options={[
-                                            { key: 'ict', text: 'ICT', value: 'ict' },
-                                            { key: 'technical', text: 'Technical', value: 'technical' }
+                                            { key: 'ict', text: 'ict', value: 'ict' },
+                                            { key: 'technical', text: 'technical', value: 'technical' }
                                         ]}
                                         placeholder='Select Patform'
+                                        onChange={e => { this.setState({ platform: e.target.textContent }) }}
                                     />
 
                                     <Button color='teal' fluid size='large'>
                                         Login
-          </Button>
+                                    </Button>
                                 </Segment>
                             </Form>
                             <Message>
@@ -49,4 +77,14 @@ class login extends Component {
     }
 }
 
-export default login;
+const mstp = (state) => {
+    return state;
+}
+
+const mdtp = (dispatch) => {
+    return {
+        loginSystem: (username, password, platform) => dispatch(loginSystem(username, password, platform))
+    }
+}
+
+export default connect(mstp, mdtp)(login);

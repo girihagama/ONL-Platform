@@ -1,8 +1,8 @@
 const authReducer = (state = {}, action) => {
     switch (action.type) {
-        case "test":
-            console.log(action);
-            return "https://picsum.photos/500?"+Math.random();
+        case "loginSystem":
+            console.log("Reducer", action);
+            return action;
         default:
             return state;
     }

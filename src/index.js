@@ -4,20 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css';
+import { BrowserRouter } from "react-router-dom";
 
 import store from './store'; //importing redux store config from store/index.js
 import { Provider } from 'react-redux'; //importing binding layer from reac-redux
 
-import {BrowserRouter} from "react-router-dom";
-
 ReactDOM.render(
-  <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}> {/* apply the store into root element */}
-        <App />
+        <App/>
       </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </BrowserRouter>,
   document.getElementById('root')
 );
 
