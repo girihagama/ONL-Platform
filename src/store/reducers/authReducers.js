@@ -1,8 +1,9 @@
 const authReducer = (state = {}, action) => {
     switch (action.type) {
-        case "loginSystem":
-            console.log("Reducer", action);
-            return action;
+        case "SIGNIN_SUCCESS":
+            return action.payload;
+        case "SIGNIN_ERROR":
+            return action.payload;
         default:
             return state;
     }

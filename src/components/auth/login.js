@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Button, Form, Grid, Header, Image, Message, Segment, Select } from 'semantic-ui-react';
-import { loginSystem } from '../../store/actions/authActions';
+import { signIn } from '../../store/actions/authActions';
 
 class login extends Component {
     state = {
-        username: 'indunil@onlnet.com',
+        username: 'indunil.onet@gmail.com',
         password: 'indunil',
         platform: 'ict'
     }
 
     handleSubmit = () => {
         console.log('Submitted', this.state);
-        this.props.loginSystem(this.state.username, this.state.password, this.state.platform);
+        this.props.signIn(this.state.username, this.state.password, this.state.platform);
     }
 
     render() {
@@ -79,11 +79,15 @@ class login extends Component {
 
 const mstp = (state) => {
     return state;
+    // OR return specific object as follows
+    /*return {
+        objectname : state.objectname
+    }*/
 }
 
 const mdtp = (dispatch) => {
     return {
-        loginSystem: (username, password, platform) => dispatch(loginSystem(username, password, platform))
+        signIn: (username, password, platform) => dispatch(signIn(username, password, platform)),
     }
 }
 
