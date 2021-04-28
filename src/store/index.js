@@ -3,7 +3,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { getFirebase } from 'react-redux-firebase';
-import firebase from './../config/fbConfig';
+import firebase from "firebase/app";
+//import firebase from './../config/fbConfig';
 import firebaseConfig from './../config/fbConfig';
 
 const enhancers = [

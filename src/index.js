@@ -9,8 +9,9 @@ import { BrowserRouter } from "react-router-dom";
 import store from './store'; //importing redux store config from store/index.js
 import { Provider } from 'react-redux'; //importing binding layer from reac-redux
 
+import firebase from "firebase/app";
+//import firebase from './config/fbConfig';
 import firebaseConfig from './config/fbConfig';
-import firebase from './config/fbConfig';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 

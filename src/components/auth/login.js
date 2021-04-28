@@ -5,8 +5,8 @@ import { loginSystem } from '../../store/actions/authActions';
 
 class login extends Component {
     state = {
-        username: '',
-        password: '',
+        username: 'indunil@onlnet.com',
+        password: 'indunil',
         platform: 'ict'
     }
 
