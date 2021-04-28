@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-var config = {
+const firebaseConfig = {
     apiKey: "AIzaSyA5xQs4wwY11h32GNmsRL5NglWIjMe7r0A",
     authDomain: "onl-service-desk.firebaseapp.com",
     projectId: "onl-service-desk",
@@ -12,7 +12,7 @@ var config = {
     measurementId: "G-29DB0BYMTX"
 };
 // Initialize Firebase
-firebase.initializeApp(config);
-firebase.firestore().settings({ timeStampInSnapshot: true });
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
 
-export default firebase;
+export default { firebase, firebaseConfig };

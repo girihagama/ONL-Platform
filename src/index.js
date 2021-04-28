@@ -9,12 +9,26 @@ import { BrowserRouter } from "react-router-dom";
 import store from './store'; //importing redux store config from store/index.js
 import { Provider } from 'react-redux'; //importing binding layer from reac-redux
 
+import firebaseConfig from './config/fbConfig';
+import firebase from './config/fbConfig';
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { createFirestoreInstance } from 'redux-firestore';
+
+const rrfProps = {
+  firebase,
+  config: firebaseConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance
+};
+
 ReactDOM.render(
-    <BrowserRouter>
-      <Provider store={store}> {/* apply the store into root element */}
-        <App/>
-      </Provider>
-    </BrowserRouter>,
+  <BrowserRouter>
+    <Provider store={store}> {/* apply the store into root element */}
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <App />
+      </ReactReduxFirebaseProvider>
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
