@@ -27,8 +27,8 @@ const mstp = (state) => {
 }
 
 export default compose(
-    connect(mstp),
-    firestoreConnect([
+    firestoreConnect(() => [
         { collection: 'customers' }
-    ])
+    ]),
+    connect(mstp),
 )(Customers);
