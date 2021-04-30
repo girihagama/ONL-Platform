@@ -1,4 +1,4 @@
-const authReducer = (state = {}, action) => {
+const authReducer = (state = {platform:"/"}, action) => {
     switch (action.type) {
         case "SIGNIN_SUCCESS":
             return action.payload;

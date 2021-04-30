@@ -21,11 +21,6 @@ class login extends Component {
 
         return (
             <div>
-                {
-                    (!this.props.firebase.auth.isEmpty)
-                    ? "Login"
-                    : "Logout"
-                }
                 <Container>
                     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                         <Grid.Column style={{ maxWidth: 450 }}>
@@ -79,7 +74,6 @@ class login extends Component {
                         </Grid.Column>
                     </Grid>
                 </Container>
-            
             </div>
         );
     }
