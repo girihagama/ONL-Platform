@@ -4,6 +4,10 @@ const authReducer = (state = {}, action) => {
             return action.payload;
         case "SIGNIN_ERROR":
             return action.payload;
+        case "SIGNOUT_SUCCESS":
+            return action.payload;
+        case "SIGNOUT_ERROR":
+            return action.payload;
         default:
             return state;
     }
