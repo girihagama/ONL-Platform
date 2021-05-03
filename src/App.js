@@ -2,40 +2,53 @@ import './App.css';
 import React from 'react';
 import { Redirect, Switch, Route, useLocation } from "react-router-dom";
 import { connect } from 'react-redux';
-import login from './components/auth/login';
-import reset from './components/auth/reset';
+import Login from './components/auth/Login';
+import Reset from './components/auth/Reset';
+import SignOut from './components/auth/SignOut';
 import ICT_Dashboard from './components/dashboard/ict';
-import { Loader, Dimmer } from 'semantic-ui-react';
 
 function App({ state, logged }) {
   const currentPath = useLocation().pathname;
-
-  console.log("APP State", state, logged);
-  console.log({ currentPath });
+  console.log("App.js", { state, currentPath, logged, localStorage });
 
   return (
     <main>
       {!logged && //non-authenticated routes
         <Switch>
           <Route exact path="/" >
-            <Route strict component={login} />
+            <Route component={() => <Login props={{ logged }} />} />
           </Route>
-          <Route exact path="/reset" component={reset} />
-          <Route exact path={["/ict", "/dashboard", "/customers"]}>
+          <Route exact path="/reset" component={Reset} />
+
+          <Route path={["/ict/*", "/technical/*"]}>
             <Redirect push to='/' />
+          </Route>
+          <Route exact path="/SignOut" >
+            <Route component={() => <SignOut />} />
+          </Route>
+          <Route path="/*">
+            <Redirect to="/" />
           </Route>
         </Switch>
       }
 
       {logged && //authenticated routes
         <Switch>
-          <Route exact path={["/","/reset"]} >
-            <Redirect push to="/ict/dashboard" />
+          <Route exact path="/SignOut" >
+            <Route component={() => <SignOut />} />
           </Route>
-          <Route exact path={["/ict", "/dashboard", "/customers"]}>
+          <Route exact path={["/", "/reset"]} >
+            <Redirect push to={(localStorage.getItem('platform').toString())} />
+          </Route>
+          <Route exact path={["/ict"]}>
             <Redirect to='/ict/dashboard' />
           </Route>
+          <Route exact path={["/technical"]}>
+            <Redirect to='/technical/dashboard' />
+          </Route>
           <Route exact path="/ict/*" component={ICT_Dashboard} />
+          <Route exact path="/technical/*" component={() => <div>Technical</div>} />
+
         </Switch>
       }
 
@@ -76,7 +89,7 @@ const mapStateToProps = (state) => {
   //console.log("APP State", state);
   return {
     state,
-    logged: !state.firebase.auth.isEmpty
+    logged: !state.firebase.auth.isEmpty,
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
-class reset extends Component {
+class Reset extends Component {
     render() {
         return (
             <div>
@@ -45,4 +45,4 @@ class reset extends Component {
     }
 }
 
-export default reset;
+export default Reset;

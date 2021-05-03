@@ -30,5 +30,5 @@ export default compose(
     firestoreConnect(() => [
         { collection: 'customers' }
     ]),
-    connect(mstp),
+    connect(mstp,null),
 )(Customers);

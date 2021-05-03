@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Button, Form, Grid, Header, Image, Message, Segment, Select } from 'semantic-ui-react';
 import { signIn } from '../../store/actions/authActions';
+import { Loader, Dimmer } from 'semantic-ui-react';
 
-class login extends Component {
+class Login extends Component {
     state = {
         username: 'indunil.onet@gmail.com',
         password: 'indunil',
@@ -16,12 +17,15 @@ class login extends Component {
     }
 
     render() {
-        console.log('STATE', this.state);
-        console.log('PROPS', this.props);
+        console.log('Login.js', { state: this.state, props: this.props });
 
         return (
             <div>
                 <Container>
+                    {this.props.logged &&
+                        <Dimmer page active><Loader size='huge' active>Loading...<hr /><img alt="logo" src="/logo_white.png" height="80px" /></Loader></Dimmer>
+                    }
+
                     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                         <Grid.Column style={{ maxWidth: 450 }}>
                             <Header as='h2' color='teal' textAlign='center'>
@@ -93,4 +97,4 @@ const mdtp = (dispatch) => {
     }
 }
 
-export default connect(mstp, mdtp)(login);
+export default connect(mstp, mdtp)(Login);

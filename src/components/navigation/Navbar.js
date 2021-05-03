@@ -2,12 +2,22 @@ import React, { Component } from 'react';
 import { Input, Menu, Image, Icon, Header } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signOut } from '../../store/actions/authActions'
+import { signOut } from '../../store/actions/authActions';
 
 class Navbar extends Component {
+    platform = localStorage.getItem('platform');
+
     render() {
+        console.log("Navbar.js", { state: this.state, props: this.props });
+
         return (
             <Menu>
+                {this.platform &&
+                    <Menu.Item>
+                        {this.platform}
+                    </Menu.Item>
+                }
+
                 <Menu.Item>
                     <Link to='/'><Image src='/logo.png' style={{ width: '70px' }} /></Link>
                 </Menu.Item>
@@ -55,7 +65,7 @@ class Navbar extends Component {
                         <Input icon='search' placeholder='Search...' />
                     </Menu.Item>
                     <Menu.Item>
-                        <Header size='small'><a href='/' onClick={this.props.signOut}>Logout</a></Header>
+                        <Header size='small'><a style={{ color: 'default', cursor: 'hand' }} onClick={this.props.signOut}>Logout</a></Header>
                     </Menu.Item>
                 </Menu.Menu>
             </Menu>

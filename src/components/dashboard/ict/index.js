@@ -8,16 +8,21 @@ import Products from '../../dashboard/ict/products';
 import Invoices from '../../dashboard/ict/invoices';
 import AMCs from '../../dashboard/ict/amcs';
 import Repairs from '../../dashboard/ict/repairs';
-import { Route, Switch, Redirect } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { firestoreConnect } from 'react-redux-firebase';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 class ICT_Dashboard extends Component {
     render() {
+        console.log("Dashboard", { state: this.state, props:this.props });
+
         return (
             <Container fluid style={{ height: '100vh', width: '100vw', backgroundColor: '#F7F7F7' }}>
                 <Grid padded>
                     <Grid.Row>
                         <Grid.Column width={16}>
-                            <Navbar />
+                            <Navbar navigation={this.props.firestore.data.navigation}/>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -45,4 +50,17 @@ class ICT_Dashboard extends Component {
     }
 }
 
-export default ICT_Dashboard;
+const mstp = (state) => {
+    return state;
+    // OR return specific object as follows
+    /*return {
+        objectname : state.objectname
+    }*/
+}
+
+export default compose(
+    firestoreConnect(() => [
+        { collection: 'navigation', doc: 'ict'}
+    ]),
+    connect(mstp,null),
+)(ICT_Dashboard);
