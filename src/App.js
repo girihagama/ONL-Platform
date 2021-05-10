@@ -13,7 +13,7 @@ function App({ state, logged }) {
 
   return (
     <main>
-      {!logged && //non-authenticated routes
+      {!localStorage.getItem('logged') && //non-authenticated routes
         <Switch>
           <Route exact path="/" >
             <Route component={() => <Login props={{ logged }} />} />
@@ -32,7 +32,7 @@ function App({ state, logged }) {
         </Switch>
       }
 
-      {logged && //authenticated routes
+      {localStorage.getItem('logged') && //authenticated routes
         <Switch>
           <Route exact path="/SignOut" >
             <Route component={() => <SignOut />} />

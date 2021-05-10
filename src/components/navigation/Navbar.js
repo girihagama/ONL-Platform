@@ -1,58 +1,44 @@
 import React, { Component } from 'react';
-import { Input, Menu, Image, Icon, Header } from 'semantic-ui-react';
+import { Input, Menu, Image, Icon, Header, Dimmer, Loader, MenuItem } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signOut } from '../../store/actions/authActions';
 
 class Navbar extends Component {
-    platform = localStorage.getItem('platform');
+    state = {
+        ict: [
+            { name: "Dashboard", path: "/dashboard" },
+            { name: "Customers", path: "/customers" },
+            { name: "Products", path: "/products" },
+            { name: "Invoices", path: "/invoices" },
+            { name: "AMCs", path: "/amcs" },
+            { name: "Repairs", path: "/repairs" }
+        ]
+    }
+
+    platformURL = localStorage.getItem('platform');
+    platformName = this.platformURL.substring(1);
+    platformSC = this.state[this.platformName];
+
 
     render() {
         console.log("Navbar.js", { state: this.state, props: this.props });
 
         return (
             <Menu>
-                {this.platform &&
-                    <Menu.Item>
-                        {this.platform}
-                    </Menu.Item>
-                }
-
                 <Menu.Item>
                     <Link to='/'><Image src='/logo.png' style={{ width: '70px' }} /></Link>
                 </Menu.Item>
 
-                <Menu.Item
-                    name='Dashboard'
-                    active={true}
-                >
-                    <Link to='/ict/dashboard'>Dashboard</Link>
-                </Menu.Item>
-                <Menu.Item
-                    name='Customers'
-                >
-                    <Link to='/ict/customers'>Customers</Link>
-                </Menu.Item>
-                <Menu.Item
-                    name='Products'
-                >
-                    <Link to='/ict/products'>Products</Link>
-                </Menu.Item>
-                <Menu.Item
-                    name='Invoices'
-                >
-                    <Link to='/ict/invoices'>Invoices</Link>
-                </Menu.Item>
-                <Menu.Item
-                    name='AMCs'
-                >
-                    <Link to='/ict/amcs'>AMCs</Link>
-                </Menu.Item>
-                <Menu.Item
-                    name='Repairs'
-                >
-                    <Link to='/ict/repairs'>Repairs</Link>
-                </Menu.Item>
+                {
+                    this.platformSC.map((val, ind) => {
+                        return (
+                            <MenuItem key={ind}>
+                                <Link to={this.platformURL + val.path}>{val.name}</Link>
+                            </MenuItem>
+                        )
+                    })
+                }
 
                 <Menu.Menu position='right'>
                     <Menu.Item>
