@@ -9,6 +9,7 @@ import ICT_Dashboard from './components/dashboard/ict';
 
 function App({ state, logged }) {
   const currentPath = useLocation().pathname;
+  localStorage.setItem("Breadcrumb", (currentPath.split('/')).pop(0));
   console.log("App.js", { state, currentPath, logged, localStorage });
 
   return (
@@ -46,7 +47,7 @@ function App({ state, logged }) {
           <Route exact path={["/technical"]}>
             <Redirect to='/technical/dashboard' />
           </Route>
-          <Route exact path="/ict/*" component={ICT_Dashboard} />
+          <Route exact path="/ict/*" component={ICT_Dashboard}/>
           <Route exact path="/technical/*" component={() => <div>Technical</div>} />
 
         </Switch>

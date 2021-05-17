@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Menu, Image, Icon, Header, Dimmer, Loader, MenuItem } from 'semantic-ui-react';
+import { Search, Menu, Image, Icon, Header, List, Loader, MenuItem } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signOut } from '../../store/actions/authActions';
@@ -19,10 +19,10 @@ class Navbar extends Component {
     platformURL = localStorage.getItem('platform');
     platformName = this.platformURL.substring(1);
     platformSC = this.state[this.platformName];
-
+    breadcrumb = localStorage.getItem("Breadcrumb");
 
     render() {
-        console.log("Navbar.js", { state: this.state, props: this.props });
+        console.log("Navbar.js", { state: this.state, props: this.props, breadcrumb: this.breadcrumb });
 
         return (
             <Menu>
@@ -33,7 +33,7 @@ class Navbar extends Component {
                 {
                     this.platformSC.map((val, ind) => {
                         return (
-                            <MenuItem key={ind}>
+                            <MenuItem active={false} key={ind}>
                                 <Link to={this.platformURL + val.path}>{val.name}</Link>
                             </MenuItem>
                         )
@@ -44,11 +44,11 @@ class Navbar extends Component {
                     <Menu.Item>
                         <Icon.Group size='big'>
                             <Icon fitted name='envelope' />
-                            <Icon corner='top right' loading name='star' color='red' />
+                            {/* <Icon corner='top right' loading name='star' color='red' /> */}
                         </Icon.Group>
                     </Menu.Item>
                     <Menu.Item>
-                        <Input icon='search' placeholder='Search...' />
+                        <Search fluid input={{ icon: 'search', iconPosition: 'right' }} placeholder="Search Serial" />
                     </Menu.Item>
                     <Menu.Item>
                         <Header size='small'><a style={{ color: 'default', cursor: 'hand' }} onClick={this.props.signOut}>Logout</a></Header>

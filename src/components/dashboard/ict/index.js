@@ -19,7 +19,7 @@ class ICT_Dashboard extends Component {
 
         return (
             <Container fluid style={{ height: '100vh', width: '100vw', backgroundColor: '#F7F7F7' }}>
-                <Grid padded>
+                <Grid padded stackable>
                     <Grid.Row>
                         <Grid.Column width={16}>
                             <Navbar navigation={this.props.firestore.data.navigation}/>
