@@ -3,3 +3,6 @@
   border-radius: 5px;
   padding: 5px;
 }
+.optionList>.item:hover .optionItems{
+  display: block !important;
+}

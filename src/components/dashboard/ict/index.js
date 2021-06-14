@@ -15,14 +15,14 @@ import { compose } from 'redux';
 
 class ICT_Dashboard extends Component {
     render() {
-        console.log("Dashboard", { state: this.state, props:this.props });
+        console.log("Dashboard", { state: this.state, props: this.props });
 
         return (
-            <Container fluid style={{ height: '100vh', width: '100vw', backgroundColor: '#F7F7F7' }}>
+            <Container fluid style={{ backgroundColor: '#F7F7F7', backgroundImage: 'url("https://picsum.photos/1920/1080?blur=2")', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed', backgroundPosition: 'center center', backgroundSize: 'cover' }}>
                 <Grid padded stackable>
                     <Grid.Row>
                         <Grid.Column width={16}>
-                            <Navbar navigation={this.props.firestore.data.navigation}/>
+                            <Navbar navigation={this.props.firestore.data.navigation} />
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -60,7 +60,7 @@ const mstp = (state) => {
 
 export default compose(
     firestoreConnect(() => [
-        { collection: 'navigation', doc: 'ict'}
+        { collection: 'navigation', doc: 'ict' }
     ]),
-    connect(mstp,null),
+    connect(mstp, null),
 )(ICT_Dashboard);
