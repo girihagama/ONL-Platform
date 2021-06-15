@@ -56,7 +56,7 @@ class Customers extends Component {
                                 <Header>
                                     List of Customers
                                     <small> (recent)</small>
-                                    <small as='h6' style={{ float: 'right' }}>1/1 Page of 235 Results</small>
+                                    <small as='h6' style={{ float: 'right' }}>1/2 Page of 40 Results</small>
                                     <small><Dropdown disabled={false} simple item text=' ' placeholder=' ' scrolling options={[{ key: 'Delete Selected', text: 'Delete Selected', value: 'Delete Selected' }, { key: 'Export Selected', text: 'Export Selected', value: 'Export Selected' }]} /></small>
                                 </Header>
                                 <hr />
@@ -160,7 +160,7 @@ class Customers extends Component {
                                                 </Button>
                                             </Button.Group>
                                         </List.Content>
-                                        <List.Icon name="user" size='large' verticalAlign="middle" />
+                                        <List.Icon name="location arrow" size='large' verticalAlign="middle" />
                                         <List.Content>
                                             <List.Header>Location Name</List.Header>
                                             <List.Description>
@@ -187,7 +187,7 @@ class Customers extends Component {
                                 <Icon name='info circle' />
                                 <Header as='h4'>
                                     Did you know?
-                                    <Header.Subheader>You can generate various reports under customers section using the left panel...</Header.Subheader>
+                                    <Header.Subheader>You can generate various reports under customers section using the left panel.</Header.Subheader>
                                 </Header>
                             </Message>
                         </Grid.Row>

@@ -41,12 +41,12 @@ class Navbar extends Component {
                 }
 
                 <Menu.Menu position='right'>
-                    <Menu.Item>
+                    {/* <Menu.Item>
                         <Icon.Group size='big'>
                             <Icon fitted name='envelope' />
-                            {/* <Icon corner='top right' loading name='star' color='red' /> */}
+                            {<Icon corner='top right' loading name='star' color='red' />}
                         </Icon.Group>
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Item>
                         <Search fluid input={{ icon: 'search', iconPosition: 'right' }} placeholder="Search Serial" />
                     </Menu.Item>

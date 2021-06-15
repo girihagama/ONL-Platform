@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Grid } from 'semantic-ui-react';
+import { Container, Grid, Menu } from 'semantic-ui-react';
 import Navbar from '../../navigation/Navbar';
 import Sidemenu from '../../navigation/Sidemenu';
 import Summary from '../../dashboard/ict/summary';
@@ -27,6 +27,133 @@ class ICT_Dashboard extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={3}>
+
+                            <Route exact path='/ict/dashboard'>
+                                <Menu vertical>
+                                    <Menu.Item>
+                                        <Menu.Header>Notifications</Menu.Header>
+
+                                        <Menu.Menu>
+                                            <Menu.Item
+                                                name='open'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                            <Menu.Item
+                                                name='send message'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                        </Menu.Menu>
+                                    </Menu.Item>
+                                </Menu>
+                            </Route>
+                            <Route exact path='/ict/customers'>
+                                <Menu vertical>
+                                    <Menu.Item><b>Customer</b></Menu.Item>
+                                    <Menu.Item>
+                                        <Menu.Header>Reports</Menu.Header>
+
+                                        <Menu.Menu>
+                                            <Menu.Item
+                                                name='report type 1'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                            <Menu.Item
+                                                name='report type 2'
+                                            //active={activeItem === 'consumer'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                        </Menu.Menu>
+                                    </Menu.Item>
+                                </Menu>
+                            </Route>
+                            <Route exact path='/ict/products'>
+                                <Menu vertical>
+                                    <Menu.Item><b>Product</b></Menu.Item>
+                                    <Menu.Item>
+                                        <Menu.Header>Reports</Menu.Header>
+
+                                        <Menu.Menu>
+                                            <Menu.Item
+                                                name='report type 1'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                            <Menu.Item
+                                                name='report type 2'
+                                            //active={activeItem === 'consumer'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                        </Menu.Menu>
+                                    </Menu.Item>
+                                </Menu>
+                            </Route>
+                            <Route exact path='/ict/invoices'>
+                                <Menu vertical>
+                                    <Menu.Item><b>Invoice</b></Menu.Item>
+                                    <Menu.Item>
+                                        <Menu.Header>Reports</Menu.Header>
+
+                                        <Menu.Menu>
+                                            <Menu.Item
+                                                name='report type 1'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                            <Menu.Item
+                                                name='report type 2'
+                                            //active={activeItem === 'consumer'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                        </Menu.Menu>
+                                    </Menu.Item>
+                                </Menu>
+                            </Route>
+                            <Route exact path='/ict/amcs'>
+                                <Menu vertical>
+                                    <Menu.Item><b>AMC</b></Menu.Item>
+                                    <Menu.Item>
+                                        <Menu.Header>Reports</Menu.Header>
+
+                                        <Menu.Menu>
+                                            <Menu.Item
+                                                name='report type 1'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                            <Menu.Item
+                                                name='report type 2'
+                                            //active={activeItem === 'consumer'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                        </Menu.Menu>
+                                    </Menu.Item>
+                                </Menu>
+                            </Route>
+                            <Route exact path='/ict/repairs'>
+                                <Menu vertical>
+                                    <Menu.Item><b>Repair</b></Menu.Item>
+                                    <Menu.Item>
+                                        <Menu.Header>Reports</Menu.Header>
+
+                                        <Menu.Menu>
+                                            <Menu.Item
+                                                name='report type 1'
+                                            //active={activeItem === 'enterprise'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                            <Menu.Item
+                                                name='report type 2'
+                                            //active={activeItem === 'consumer'}
+                                            //onClick={this.handleItemClick}
+                                            />
+                                        </Menu.Menu>
+                                    </Menu.Item>
+                                </Menu>
+                            </Route>
+
                             <Sidemenu />
                         </Grid.Column>
                         <Grid.Column width={13}>

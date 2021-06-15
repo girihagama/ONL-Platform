@@ -1,70 +1,75 @@
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Label } from 'semantic-ui-react';
 
 class Sidemenu extends Component {
     render() {
         return (
             <Menu vertical>
+                <Menu.Item><b>Quick Links</b></Menu.Item>
+
                 <Menu.Item>
-                    <Menu.Header>Products</Menu.Header>
+                    <Menu.Header>User</Menu.Header>
 
                     <Menu.Menu>
                         <Menu.Item
-                            name='enterprise'
-                            //active={activeItem === 'enterprise'}
-                            //onClick={this.handleItemClick}
-                        />
-                        <Menu.Item
-                            name='consumer'
-                            //active={activeItem === 'consumer'}
-                            //onClick={this.handleItemClick}
+                            name='Profile'
+                        //active={activeItem === 'enterprise'}
+                        //onClick={this.handleItemClick}
                         />
                     </Menu.Menu>
                 </Menu.Item>
 
                 <Menu.Item>
-                    <Menu.Header>CMS Solutions</Menu.Header>
+                    <Menu.Header>System</Menu.Header>
 
                     <Menu.Menu>
                         <Menu.Item
-                            name='rails'
-                            //active={activeItem === 'rails'}
-                            //onClick={this.handleItemClick}
-                        />
-                        <Menu.Item
-                            name='python'
-                            //active={activeItem === 'python'}
-                            //onClick={this.handleItemClick}
-                        />
-                        <Menu.Item
-                            name='php'
-                            //active={activeItem === 'php'}
-                            //onClick={this.handleItemClick}
+                            name='About'
+                        //active={activeItem === 'enterprise'}
+                        //onClick={this.handleItemClick}
                         />
                     </Menu.Menu>
                 </Menu.Item>
 
                 <Menu.Item>
-                    <Menu.Header>Support</Menu.Header>
+                    <Menu.Header>General</Menu.Header>
 
                     <Menu.Menu>
                         <Menu.Item
-                            name='email'
-                            //active={activeItem === 'email'}
-                            //onClick={this.handleItemClick}
-                        >
-                            E-mail Support
-            </Menu.Item>
-
+                            name='Import'
+                        //active={activeItem === 'enterprise'}
+                        //onClick={this.handleItemClick}
+                        />
                         <Menu.Item
-                            name='faq'
-                            //active={activeItem === 'faq'}
-                            //onClick={this.handleItemClick}
-                        >
-                            FAQs
-            </Menu.Item>
+                            name='Export'
+                        //active={activeItem === 'consumer'}
+                        //onClick={this.handleItemClick}
+                        />
                     </Menu.Menu>
                 </Menu.Item>
+
+                <Menu.Item>
+                    <Menu.Header>Licence</Menu.Header>
+
+                    <Menu.Menu>
+                        <Menu.Item
+                            name='View'
+                        //active={activeItem === 'enterprise'}
+                        //onClick={this.handleItemClick}
+                        />
+                        <Menu.Item
+                            name='Update'
+                        //active={activeItem === 'enterprise'}
+                        //onClick={this.handleItemClick}
+                        />
+                    </Menu.Menu>
+                </Menu.Item>
+
+                    <Menu.Item>
+                        © Copyright<br />
+                        <a href="mailto:indunil.tharanga.priyadarshana@gmail.com">Indunil Girihagama</a> - {new Date().getFullYear()}<br />
+                    All Rights Reserved
+                    </Menu.Item>
             </Menu>
         );
     }
