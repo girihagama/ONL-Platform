@@ -191,7 +191,7 @@ class Customers extends Component {
                                     <Header.Subheader>You can generate various reports under repair section using the left panel.</Header.Subheader>
                                 </Header>
                             </Message>
-                        </Grid.Row>
+                        </Grid.Row>                    
 
                     </Grid>
                 </Container>

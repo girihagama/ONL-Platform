@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Segment, Grid, List, Header, Input, Button, Icon, Label, Message, Checkbox, Pagination, Dropdown, Popup, Menu, Loader, Dimmer, Confirm } from 'semantic-ui-react';
+import { Container, Segment, Grid, List, Header, Input, Button, Icon, Label, Message, Checkbox, Pagination, Dropdown, Popup, Menu, Loader, Dimmer, Confirm, Modal } from 'semantic-ui-react';
 import { firestoreConnect } from 'react-redux-firebase';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-class Customers extends Component {
+import AppendModal from './AppendModal';
+
+class Customers extends Component { 
     state = {
-        confirmShow: false
-    };
+        confirmShow : false
+    } 
 
     render() {
         console.log('PROPS', this.props);
@@ -78,7 +80,7 @@ class Customers extends Component {
                                                 <Button animated='fade'>
                                                     <Button.Content hidden style={{ color: 'red' }}>
                                                         Delete
-                                                </Button.Content>
+                                                    </Button.Content>
                                                     <Button.Content visible>
                                                         <Icon name='trash' />
                                                     </Button.Content>
@@ -86,7 +88,7 @@ class Customers extends Component {
                                                 <Button animated='fade'>
                                                     <Button.Content hidden style={{ color: '#e65800' }}>
                                                         Edit
-                                                </Button.Content>
+                                                    </Button.Content>
                                                     <Button.Content visible>
                                                         <Icon name='pencil' />
                                                     </Button.Content>
@@ -94,7 +96,7 @@ class Customers extends Component {
                                                 <Button animated='fade' color='blue'>
                                                     <Button.Content hidden>
                                                         Expand
-                                                </Button.Content>
+                                                    </Button.Content>
                                                     <Button.Content visible>
                                                         <Icon name='arrow right' />
                                                     </Button.Content>
@@ -145,7 +147,7 @@ class Customers extends Component {
                                                 <Button animated='fade'>
                                                     <Button.Content hidden style={{ color: 'red' }}>
                                                         Delete
-                                                </Button.Content>
+                                                    </Button.Content>
                                                     <Button.Content visible>
                                                         <Icon name='trash' />
                                                     </Button.Content>
@@ -192,6 +194,26 @@ class Customers extends Component {
                             </Message>
                         </Grid.Row>
 
+                        <Grid.Row columns={16}>
+                            <Grid.Column width={16}>
+                                <center>Modals: <br /></center>
+
+                                
+
+                                <AppendModal/>
+
+                                <Button>Export</Button>
+                                <Button>Add Customer</Button>
+                                <Button>Add Location</Button>
+                                <Button>Delete Customer Confirmation</Button>
+                                <Button>Edit Customer</Button> <hr />
+                                <Button>Delete Location Confirmation</Button>
+                                <Button>Edit Location</Button>
+                                <Button>Bulk Delete Confirmation</Button>
+                                <Button>Bulk Export</Button>
+                            </Grid.Column>
+                        </Grid.Row>
+
                     </Grid>
                 </Container>
             </Segment>
@@ -203,7 +225,7 @@ const mstp = (state) => {
     return state;
     // OR return specific object as follows
     /*return {
-        objectname : state.objectname
+                    objectname : state.objectname
     }*/
 }
 
