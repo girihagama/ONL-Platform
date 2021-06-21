@@ -187,7 +187,7 @@ const mstp = (state) => {
 
 export default compose(
     firestoreConnect(() => [
-        { collection: 'navigation', doc: 'ict' }
+        { collection: 'navigation', doc: 'ict' },    
     ]),
     connect(mstp, null),
 )(ICT_Dashboard);

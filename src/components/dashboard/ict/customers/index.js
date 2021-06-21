@@ -4,6 +4,11 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import shortid from 'shortid';
+import md5 from 'md5';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import ExportSelectedCustomersModal from './ExportSelectedCustomersModal';
 import ExportCustomersModal from './ExportCustomersModal';
@@ -12,13 +17,19 @@ import AddCustomerModal from './AddCustomerModal';
 import EditCustomerModal from './EditCustomerModal';
 import AddEditLocationModal from './AddEditLocationModal';
 
+import BranchCountSub from './BranchCountSub';
+
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo('en-US');
+
 class Customers extends Component {
     state = {
-
+        expandedCustomer: null
     }
 
     render() {
-        console.log({ 'PROPS': this.props });
+        console.log({ 'PROPS': this.props }, { 'STATE': this.state });
+        //console.log(md5(shortid.generate()), timeAgo.format(new Date()));
 
         return (
             <Segment>
@@ -70,78 +81,104 @@ class Customers extends Component {
                                 <hr />
 
                                 {
-                                (!this.props.firestore.ordered.customers)?
-                                "Loading"
-                                :
-                                "Available"
+                                    (!this.props.firestore.ordered.customers)
+                                        ? //no customers available or waiting for fetch
+                                        <Message icon>
+                                            <Icon name='circle notched' loading />
+                                            <Message.Content>
+                                                <Message.Header>No customers to show</Message.Header>
+                                                Please wait while fetching or search for customers
+                                            </Message.Content>
+                                        </Message>
+                                        : //customer records available
+                                        <div>
+                                            <List relaxed divided celled className='optionList'>
+                                                {
+                                                    (this.props.firestore.ordered.customers).map((item, index) => {
+                                                        return (
+                                                            <List.Item className='optionListItem'>
+                                                                <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
+                                                                    <Button.Group size='tiny'>
+                                                                        <Button animated='fade'>
+                                                                            <Button.Content hidden style={{ color: 'red' }}>
+                                                                                Delete
+                                                                            </Button.Content>
+                                                                            <Button.Content visible>
+                                                                                <Icon name='trash' />
+                                                                            </Button.Content>
+                                                                        </Button>
+                                                                        <Button animated='fade'>
+                                                                            <Button.Content hidden style={{ color: '#e65800' }}>
+                                                                                Edit
+                                                                            </Button.Content>
+                                                                            <Button.Content visible>
+                                                                                <Icon name='pencil' />
+                                                                            </Button.Content>
+                                                                        </Button>
+                                                                        <Button animated='fade' color='blue' onClick={() => { this.setState({ expandedCustomer: item.id }) }}>
+                                                                            <Button.Content hidden>
+                                                                                Expand
+                                                                            </Button.Content>
+                                                                            <Button.Content visible>
+                                                                                <Icon name='arrow right' />
+                                                                            </Button.Content>
+                                                                        </Button>
+                                                                    </Button.Group>
+                                                                </List.Content>
+                                                                <List.Icon name="user" size='large' verticalAlign="middle" />
+                                                                <List.Content>
+                                                                    <List.Header>
+                                                                        <Checkbox label={(item.customerName) ? item.customerName : "N/A"} />
+                                                                    </List.Header>
+                                                                    <List.Description style={{ marginTop: '5px' }}>
+                                                                        <Label>
+                                                                            <Icon name='save' />
+                                                                            Created On
+                                                                            <Label.Detail>{(!item.createdDate) ? "N/A" : timeAgo.format(new Date(parseInt(item.createdDate.seconds) * 1000))}</Label.Detail>
+                                                                        </Label>
+                                                                        <BranchCountSub doc={item.id} />
+                                                                    </List.Description>
+                                                                </List.Content>
+                                                            </List.Item>
+                                                        )
+                                                    })
+                                                }
+                                            </List>
+
+                                            <Pagination
+                                                boundaryRange={0}
+                                                defaultActivePage={1}
+                                                ellipsisItem={null}
+                                                firstItem={null}
+                                                lastItem={null}
+                                                siblingRange={1}
+                                                totalPages={10}
+                                                secondary
+                                            />
+                                            <Popup content="Items per load" trigger={
+                                                <Dropdown style={{ float: 'right' }} compact selection defaultValue={20} options={[{ key: 20, text: '20', value: 20 }, { key: 50, text: '50', value: 50 }, { key: 100, text: '100', value: 100 }]} />
+                                            } />
+
+                                        </div>
                                 }
-
-                                <List relaxed divided celled className='optionList'>
-                                    <List.Item className='optionListItem'>
-                                        <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
-                                            <Button.Group size='tiny'>
-                                                <Button animated='fade'>
-                                                    <Button.Content hidden style={{ color: 'red' }}>
-                                                        Delete
-                                                    </Button.Content>
-                                                    <Button.Content visible>
-                                                        <Icon name='trash' />
-                                                    </Button.Content>
-                                                </Button>
-                                                <Button animated='fade'>
-                                                    <Button.Content hidden style={{ color: '#e65800' }}>
-                                                        Edit
-                                                    </Button.Content>
-                                                    <Button.Content visible>
-                                                        <Icon name='pencil' />
-                                                    </Button.Content>
-                                                </Button>
-                                                <Button animated='fade' color='blue'>
-                                                    <Button.Content hidden>
-                                                        Expand
-                                                    </Button.Content>
-                                                    <Button.Content visible>
-                                                        <Icon name='arrow right' />
-                                                    </Button.Content>
-                                                </Button>
-                                            </Button.Group>
-                                        </List.Content>
-                                        <List.Icon name="user" size='large' verticalAlign="middle" />
-                                        <List.Content>
-                                            <List.Header>
-                                                <Checkbox label="Customer Name" />
-                                            </List.Header>
-                                            <List.Description>Added: Added date | Branches: No. Branches</List.Description>
-                                        </List.Content>
-                                    </List.Item>
-                                </List>
-
-                                <Pagination
-                                    boundaryRange={0}
-                                    defaultActivePage={1}
-                                    ellipsisItem={null}
-                                    firstItem={null}
-                                    lastItem={null}
-                                    siblingRange={1}
-                                    totalPages={10}
-                                    secondary
-                                />
-                                <Popup content="Items per load" trigger={
-                                    <Dropdown style={{ float: 'right' }} compact selection defaultValue={20} options={[{ key: 20, text: '20', value: 20 }, { key: 50, text: '50', value: 50 }, { key: 100, text: '100', value: 100 }]} />
-                                } />
-
-                                <Message icon>
-                                    <Icon name='circle notched' loading />
-                                    <Message.Content>
-                                        <Message.Header>No customers to show</Message.Header>
-                                        Please wait while fetching or search for customers
-                                    </Message.Content>
-                                </Message>
                             </Grid.Column>
 
                             <Grid.Column width={7}>
                                 <Header>Customer Locations <small>(all)</small><small style={{ float: 'right' }}><Button disabled size='small' simple style={{ backgroundColor: 'white', color: '#398CCB' }} icon circular><Icon name='add' /> Add</Button></small></Header><hr />
 
+                                {
+                                    (!this.props.firestore.ordered[this.state.expandedCustomer + "-locations"])
+                                        ?
+                                        <Message icon>
+                                            <Icon name='circle notched' loading />
+                                            <Message.Content>
+                                                <Message.Header>No locations to show</Message.Header>
+                                                Select one of list from customers
+                                            </Message.Content>
+                                        </Message>
+                                        :
+                                        "Loaded"
+                                }
 
                                 <List relaxed divided celled className='optionList'>
                                     <List.Item className='optionListItem'>
@@ -177,13 +214,6 @@ class Customers extends Component {
                                     </List.Item>
                                 </List>
 
-                                <Message icon>
-                                    <Icon name='circle notched' loading />
-                                    <Message.Content>
-                                        <Message.Header>No locations to show</Message.Header>
-                                        Select one of list from customers
-                                    </Message.Content>
-                                </Message>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -229,8 +259,8 @@ const mstp = (state) => {
 }
 
 export default compose(
-    firestoreConnect(() => [
-        { collection: 'customers' }
+    firestoreConnect((props) => [
+        { collection: 'customers', queryParams: ['limitToLast=1'] }
     ]),
     connect(mstp, null),
 )(Customers);
