@@ -18,7 +18,7 @@ class ICT_Dashboard extends Component {
         console.log("Dashboard", { state: this.state, props: this.props });
 
         return (
-            <Container fluid style={{ backgroundColor: '#F7F7F7', backgroundImage: 'url("https://picsum.photos/1920/1080?blur=2")', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed', backgroundPosition: 'center center', backgroundSize: 'cover' }}>
+            <Container fluid className="gradient1"> {/*style={{ backgroundColor: '#F7F7F7', backgroundImage: 'url("https://picsum.photos/1920/1080?blur=2")', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed', backgroundPosition: 'center center', backgroundSize: 'cover' }}*/}
                 <Grid padded stackable>
                     <Grid.Row>
                         <Grid.Column width={16}>

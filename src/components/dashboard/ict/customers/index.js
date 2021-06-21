@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import { Container, Segment, Grid, List, Header, Input, Button, Icon, Label, Message, Checkbox, Pagination, Dropdown, Popup, Menu, Loader, Dimmer, Confirm, Modal } from 'semantic-ui-react';
+import { Container, Segment, Grid, List, Header, Input, Button, Icon, Label, Message, Checkbox, Pagination, Dropdown, Popup } from 'semantic-ui-react';
 import { firestoreConnect } from 'react-redux-firebase';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import DeleteConfirmationModal from './DeleteConfirmationModal';
+import ExportSelectedCustomersModal from './ExportSelectedCustomersModal';
+import ExportCustomersModal from './ExportCustomersModal';
 import AppendModal from './AppendModal';
+import AddCustomerModal from './AddCustomerModal';
+import EditCustomerModal from './EditCustomerModal';
+import AddEditLocationModal from './AddEditLocationModal';
 
-class Customers extends Component { 
+class Customers extends Component {
     state = {
-        confirmShow : false
-    } 
+
+    }
 
     render() {
-        console.log('PROPS', this.props);
+        console.log({ 'PROPS': this.props });
 
         return (
             <Segment>
@@ -63,20 +69,17 @@ class Customers extends Component {
                                 </Header>
                                 <hr />
 
+                                {
+                                (!this.props.firestore.ordered.customers)?
+                                "Loading"
+                                :
+                                "Available"
+                                }
+
                                 <List relaxed divided celled className='optionList'>
                                     <List.Item className='optionListItem'>
                                         <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
                                             <Button.Group size='tiny'>
-                                                <Confirm
-                                                    open={this.state.confirmShow}
-                                                    size='mini'
-                                                    closeOnEscape={false}
-                                                    closeOnDimmerClick={false}
-                                                    trigger={<Button onClick={() => this.setState({ confirmShow: true })}>Confirm</Button>}
-                                                    content={'Confirm Action?'}
-                                                    onCancel={() => { this.setState({ confirmShow: false }); alert('cancelled'); }}
-                                                    onConfirm={() => { this.setState({ confirmShow: false }); alert('confirmed'); }}
-                                                />
                                                 <Button animated='fade'>
                                                     <Button.Content hidden style={{ color: 'red' }}>
                                                         Delete
@@ -197,20 +200,16 @@ class Customers extends Component {
                         <Grid.Row columns={16}>
                             <Grid.Column width={16}>
                                 <center>Modals: <br /></center>
-
-                                
-
-                                <AppendModal/>
-
-                                <Button>Export</Button>
-                                <Button>Add Customer</Button>
-                                <Button>Add Location</Button>
-                                <Button>Delete Customer Confirmation</Button>
-                                <Button>Edit Customer</Button> <hr />
-                                <Button>Delete Location Confirmation</Button>
-                                <Button>Edit Location</Button>
-                                <Button>Bulk Delete Confirmation</Button>
-                                <Button>Bulk Export</Button>
+                                <AppendModal dismissable={false} />
+                                <ExportSelectedCustomersModal dataType="Export Customers & Locations" trigger="Selected Export" description="Do you need to export selected customers and their locations?" />
+                                <AddCustomerModal trigger="Add Customer" dismissable={false} />
+                                <AddEditLocationModal dataType="Add New Location" trigger="Add Location" dismissable={false} />
+                                <DeleteConfirmationModal dataType="Customer" trigger="Delete Customer" dismissable={false} description="Delete [XXX] customer" />
+                                <EditCustomerModal dataType="Edit Customer" trigger="Edit Customer" dismissable={false} /><hr />
+                                <DeleteConfirmationModal dataType="Location" trigger="Delete Location" dismissable={false} description="Delete [XXX] location from [XXX] customer" />
+                                <AddEditLocationModal dataType="Edit Location" trigger="Edit Location" dismissable={false} />
+                                <DeleteConfirmationModal dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" />
+                                <ExportCustomersModal dataType="Export Customers & Locations" trigger="Bulk Export" description="Do you need to export all the customers and their locations in the system?" />
                             </Grid.Column>
                         </Grid.Row>
 
@@ -225,7 +224,7 @@ const mstp = (state) => {
     return state;
     // OR return specific object as follows
     /*return {
-                    objectname : state.objectname
+        objectname : state.objectname
     }*/
 }
 

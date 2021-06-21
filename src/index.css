@@ -6,3 +6,23 @@
 .optionList>.item:hover .optionItems{
   display: block !important;
 }
+
+.gradient1 {
+  background: linear-gradient(135deg, rgba(0, 255, 189, 0.5), rgba(0, 140, 255, 0.5), rgba(189, 189, 189, 0.5), rgba(0, 0, 0, 0.5), rgba(255, 92, 0, 0.5), rgba(255, 0, 99, 0.5), rgba(186, 0, 255, 0.5), rgba(255, 227, 0, 0.5), rgba(255, 255, 255, 0.5), rgba(0, 255, 32, 0.5)),url("https://picsum.photos/1920/1080");
+  background-size: auto cover;
+  background: opacity 0.5;
+
+  -webkit-animation: bgGradient 300s ease infinite;
+  animation: bgGradient 300s ease infinite;
+}
+
+@-webkit-keyframes bgGradient {
+  0%{background-position:14% 0%}
+  50%{background-position:87% 100%}
+  100%{background-position:14% 0%}
+}
+@keyframes bgGradient {
+  0%{background-position:14% 0%}
+  50%{background-position:87% 100%}
+  100%{background-position:14% 0%}
+}
