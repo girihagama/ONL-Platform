@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Grid, Menu } from 'semantic-ui-react';
+import { Container, Grid, Menu, Label } from 'semantic-ui-react';
 import Navbar from '../../navigation/Navbar';
 import Sidemenu from '../../navigation/Sidemenu';
 import Summary from '../../dashboard/ict/summary';
@@ -27,10 +27,10 @@ class ICT_Dashboard extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={3}>
-
+                            
                             <Route exact path='/ict/dashboard'>
-                                <Menu vertical>
-                                    <Menu.Item>
+                                <Menu vertical>                                    
+                                    <Menu.Item disabled> <Label style={{marginRight:'-1px'}} as='a' attached='top right' color='red' size='small'>Coming Soon</Label>
                                         <Menu.Header>Notifications</Menu.Header>
 
                                         <Menu.Menu>
@@ -48,10 +48,11 @@ class ICT_Dashboard extends Component {
                                     </Menu.Item>
                                 </Menu>
                             </Route>
+                            
                             <Route exact path='/ict/customers'>
                                 <Menu vertical>
                                     <Menu.Item><b>Customer</b></Menu.Item>
-                                    <Menu.Item>
+                                    <Menu.Item disabled> <Label style={{marginRight:'-1px',marginTop:'1px'}} as='a' attached='top right' color='red' size='small'>Coming Soon</Label>
                                         <Menu.Header>Reports</Menu.Header>
 
                                         <Menu.Menu>

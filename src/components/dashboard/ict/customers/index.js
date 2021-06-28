@@ -6,8 +6,8 @@ import { compose } from 'redux';
 
 import shortid from 'shortid';
 import md5 from 'md5';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
+import ReactTimeAgo from 'react-time-ago';
+import moment from 'moment';
 
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import ExportSelectedCustomersModal from './ExportSelectedCustomersModal';
@@ -18,17 +18,57 @@ import EditCustomerModal from './EditCustomerModal';
 import AddEditLocationModal from './AddEditLocationModal';
 
 import BranchCountSub from './BranchCountSub';
+import ContactNumbersSub from './ContactNumbersSub';
+import BranchListSub from './BranchListSub';
+import CustomerSearch from './CustomerSearch';
 
-TimeAgo.addDefaultLocale(en);
-const timeAgo = new TimeAgo('en-US');
+import { addCustomer, addLocation, editCustomer, editLocation, deleteCustomer, deleteLocation, customerSearch } from '../../../../store/actions/customerActions';
 
 class Customers extends Component {
     state = {
-        expandedCustomer: null
+        expandedCustomer: null,
+        expandedCustomerName: null,
+        selectedCustomers: {},
+        searchKeyword: null
+    }
+
+    handleCheck = (id, checked) => {
+        //console.log(id, this.state.selectedCustomers.indexOf(id));
+        var selected = this.state.selectedCustomers;
+        var obj = {
+            ...selected,
+            [id]: checked
+        }
+        Object.entries(obj).map(([key, value], index) => {
+            if (value == false) {
+                delete obj[key];
+            }
+        });
+        this.setState({ selectedCustomers: obj });
+    }
+
+    deleteCustomer = (params) => {
+        console.log("Delete Customer", params[0]);
+        this.props.deleteCustomer(params[0]);
+
+    }
+
+    deleteLocation = (params) => {
+        console.log("Delete Location", "Customer " + params[0], "Location " + params[1]);
+        this.props.deleteLocation(params[0], params[1]);
+    }
+
+    deleteSelected = () => {
+        console.log("Delete Selected", this.state.selectedCustomers);
+    }
+
+    editCustomer = (params) => {
+        console.log("Customer Updated!", params);
+        this.props.editCustomer(params[0], params[1]);
     }
 
     render() {
-        console.log({ 'PROPS': this.props }, { 'STATE': this.state });
+        console.log({ 'PROPS': this.props }, { 'STATE': this.state }, this.state.selectedCustomers);
         //console.log(md5(shortid.generate()), timeAgo.format(new Date()));
 
         return (
@@ -52,12 +92,14 @@ class Customers extends Component {
                         <Grid.Row columns={16}>
                             <Grid.Column width={4}>
                                 {/* <Search fluid input={{ icon: 'search', iconPosition: 'right' }} placeholder="Search Customers" /> */}
-                                <Input list='customers' style={{ float: 'left', display: 'inline-block' }} iconPosition='left' loading={false} icon='search' placeholder='Search Customers' />
-                                <datalist id='customers'>
-                                    <option value='Cus1'>Cus1</option>
-                                    <option value='Cus2'>Cus2</option>
-                                    <option value='Cus3'>Cus3</option>
-                                </datalist>
+                                <Input list='customers' style={{ float: 'left', display: 'inline-block' }} iconPosition='left' loading={false} icon='search' placeholder='Search Customers' onChange={(e) => { (e.target.value == "") ? this.setState({ searchKeyword: null }) : this.setState({ searchKeyword: e.target.value }) }} />
+                                {
+                                    (this.state.searchKeyword == null)
+                                        ?
+                                        <datalist id='customers' />
+                                        :
+                                        <CustomerSearch keyword={this.state.searchKeyword} />
+                                }
                             </Grid.Column>
                             <Grid.Column width={12} textAlign="right">
                                 <Button as='div' labelPosition='right'>
@@ -92,30 +134,31 @@ class Customers extends Component {
                                         </Message>
                                         : //customer records available
                                         <div>
-                                            <List relaxed divided celled className='optionList'>
+                                            <List relaxed divided celled className={['optionList']}>
                                                 {
                                                     (this.props.firestore.ordered.customers).map((item, index) => {
                                                         return (
-                                                            <List.Item className='optionListItem'>
+                                                            <List.Item className='optionListItem' key={item.id}>
                                                                 <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
                                                                     <Button.Group size='tiny'>
-                                                                        <Button animated='fade'>
-                                                                            <Button.Content hidden style={{ color: 'red' }}>
+                                                                        <DeleteConfirmationModal triggerElement={<Button animated='fade'>
+                                                                            {/* <Button.Content hidden style={{ color: 'red' }}>
                                                                                 Delete
-                                                                            </Button.Content>
+                                                                            </Button.Content> */}
+                                                                            <Button.Content hidden style={{ color: 'red' }}>Delete</Button.Content>
                                                                             <Button.Content visible>
                                                                                 <Icon name='trash' />
                                                                             </Button.Content>
-                                                                        </Button>
-                                                                        <Button animated='fade'>
+                                                                        </Button>} function={this.deleteCustomer} functionParams={[item.id]} dataType="Customer" trigger="Delete Customer" dismissable={false} description={"Delete [" + item.customerName + "] customer"} />
+                                                                        <EditCustomerModal function={this.editCustomer} functionParams={[item.id, item.customerName]} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} triggerElement={<Button animated='fade'>
                                                                             <Button.Content hidden style={{ color: '#e65800' }}>
                                                                                 Edit
                                                                             </Button.Content>
                                                                             <Button.Content visible>
                                                                                 <Icon name='pencil' />
                                                                             </Button.Content>
-                                                                        </Button>
-                                                                        <Button animated='fade' color='blue' onClick={() => { this.setState({ expandedCustomer: item.id }) }}>
+                                                                        </Button>} />
+                                                                        <Button animated='fade' color='blue' onClick={() => { this.setState({ expandedCustomer: item.id, expandedCustomerName: item.customerName }) }}>
                                                                             <Button.Content hidden>
                                                                                 Expand
                                                                             </Button.Content>
@@ -128,15 +171,15 @@ class Customers extends Component {
                                                                 <List.Icon name="user" size='large' verticalAlign="middle" />
                                                                 <List.Content>
                                                                     <List.Header>
-                                                                        <Checkbox label={(item.customerName) ? item.customerName : "N/A"} />
+                                                                        <Checkbox key={item.id} onChange={(e, value) => this.handleCheck(item.id, value.checked)} label={(item.customerName) ? item.customerName : "N/A"} />
                                                                     </List.Header>
                                                                     <List.Description style={{ marginTop: '5px' }}>
                                                                         <Label>
                                                                             <Icon name='save' />
-                                                                            Created On
-                                                                            <Label.Detail>{(!item.createdDate) ? "N/A" : timeAgo.format(new Date(parseInt(item.createdDate.seconds) * 1000))}</Label.Detail>
+                                                                            Created On : {new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss")).toDateString()}
                                                                         </Label>
-                                                                        <BranchCountSub doc={item.id} />
+                                                                        <Label>{(!item.createdDate) ? "N/A" : <ReactTimeAgo date={new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss"))} locale="en-SL" />}</Label>
+                                                                        {/* <BranchCountSub doc={item.id} /> */}
                                                                     </List.Description>
                                                                 </List.Content>
                                                             </List.Item>
@@ -164,10 +207,12 @@ class Customers extends Component {
                             </Grid.Column>
 
                             <Grid.Column width={7}>
-                                <Header>Customer Locations <small>(all)</small><small style={{ float: 'right' }}><Button disabled size='small' simple style={{ backgroundColor: 'white', color: '#398CCB' }} icon circular><Icon name='add' /> Add</Button></small></Header><hr />
-
+                                <Header>Customer Locations
+                                    {(this.state.expandedCustomerName) ? <small> ({this.state.expandedCustomerName})</small> : ""}
+                                    <small style={{ float: 'right' }}>
+                                        <Button disabled={(!this.state.expandedCustomer)} size='small' simple style={{ backgroundColor: 'white', color: '#398CCB' }} icon circular><Icon name='add' /> Add</Button></small></Header><hr />
                                 {
-                                    (!this.props.firestore.ordered[this.state.expandedCustomer + "-locations"])
+                                    (!this.state.expandedCustomer)
                                         ?
                                         <Message icon>
                                             <Icon name='circle notched' loading />
@@ -177,43 +222,10 @@ class Customers extends Component {
                                             </Message.Content>
                                         </Message>
                                         :
-                                        "Loaded"
+                                        <div>
+                                            <BranchListSub function={this.deleteLocation} functionParams={[this.state.expandedCustomer, this.state.expandedCustomerName]} doc={this.state.expandedCustomer} />
+                                        </div>
                                 }
-
-                                <List relaxed divided celled className='optionList'>
-                                    <List.Item className='optionListItem'>
-                                        <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
-                                            <Button.Group size='tiny'>
-                                                <Button animated='fade'>
-                                                    <Button.Content hidden style={{ color: 'red' }}>
-                                                        Delete
-                                                    </Button.Content>
-                                                    <Button.Content visible>
-                                                        <Icon name='trash' />
-                                                    </Button.Content>
-                                                </Button>
-                                                <Button animated='fade'>
-                                                    <Button.Content hidden style={{ color: '#e65800' }}>
-                                                        Edit
-                                                    </Button.Content>
-                                                    <Button.Content visible>
-                                                        <Icon name='pencil' />
-                                                    </Button.Content>
-                                                </Button>
-                                            </Button.Group>
-                                        </List.Content>
-                                        <List.Icon name="location arrow" size='large' verticalAlign="middle" />
-                                        <List.Content>
-                                            <List.Header>Location Name</List.Header>
-                                            <List.Description>
-                                                Address: { }<br />
-                                                Phone: { } (Contact Person)<br />
-                                                Email: { }
-                                            </List.Description>
-                                        </List.Content>
-                                    </List.Item>
-                                </List>
-
                             </Grid.Column>
                         </Grid.Row>
 
@@ -233,12 +245,12 @@ class Customers extends Component {
                                 <AppendModal dismissable={false} />
                                 <ExportSelectedCustomersModal dataType="Export Customers & Locations" trigger="Selected Export" description="Do you need to export selected customers and their locations?" />
                                 <AddCustomerModal trigger="Add Customer" dismissable={false} />
-                                <AddEditLocationModal dataType="Add New Location" trigger="Add Location" dismissable={false} />
-                                <DeleteConfirmationModal dataType="Customer" trigger="Delete Customer" dismissable={false} description="Delete [XXX] customer" />
-                                <EditCustomerModal dataType="Edit Customer" trigger="Edit Customer" dismissable={false} /><hr />
-                                <DeleteConfirmationModal dataType="Location" trigger="Delete Location" dismissable={false} description="Delete [XXX] location from [XXX] customer" />
+                                <AddEditLocationModal dataType="Add New Location" function={this.addLocation} trigger="Add Location" dismissable={false} />
+                                <DeleteConfirmationModal triggerElement={<Button disabled>Delete Customer</Button>} function={this.deleteCustomer} functionParams={["WnmG36Fo0KPbO0BrdDxR"]} dataType="Customer" trigger="Delete Customer" dismissable={false} description="Delete [XXX] customer" />
+                                <EditCustomerModal triggerElement={<Button disabled>Edit Customer</Button>} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} /><hr />
+                                <DeleteConfirmationModal triggerElement={<Button disabled>Delete Location</Button>} dataType="Location" function={this.deleteLocation} functionParams={["UYbCFcIy2FXAiKjNcHN6", "LzaQl4NMhKYzcsAH93yz"]} trigger="Delete Location" dismissable={false} description="Delete [XXX] location from [XXX] customer" />
                                 <AddEditLocationModal dataType="Edit Location" trigger="Edit Location" dismissable={false} />
-                                <DeleteConfirmationModal dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" />
+                                <DeleteConfirmationModal triggerElement={<Button>Delete Selected</Button>} dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" />
                                 <ExportCustomersModal dataType="Export Customers & Locations" trigger="Bulk Export" description="Do you need to export all the customers and their locations in the system?" />
                             </Grid.Column>
                         </Grid.Row>
@@ -258,9 +270,23 @@ const mstp = (state) => {
     }*/
 }
 
+const mdtp = (dispatch) => {
+    return {
+        addCustomer: (customerData, locationData) => dispatch(addCustomer(customerData, locationData)),
+        addLocation: (customerId, locationData) => dispatch(addLocation(customerId, locationData)),
+        editCustomer: (customerId, customerData) => dispatch(editCustomer(customerId, customerData)),
+        editLocation: (customerId, locationId, locationData) => dispatch(editLocation(customerId, locationId, locationData)),
+        deleteCustomer: (customerId) => dispatch(deleteCustomer(customerId)),
+        deleteLocation: (customerId, locationId) => dispatch(deleteLocation(customerId, locationId)),
+        customerSearch: (keyword) => dispatch(customerSearch(keyword)),
+    }
+}
+
 export default compose(
-    firestoreConnect((props) => [
-        { collection: 'customers', queryParams: ['limitToLast=1'] }
-    ]),
-    connect(mstp, null),
+    firestoreConnect(
+        (props) => [
+            { collection: 'customers', limit: 10, orderBy: ["createdDate", "desc"]},
+        ]
+    ),
+    connect(mstp, mdtp)
 )(Customers);

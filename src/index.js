@@ -15,6 +15,13 @@ import firebaseConfig from './config/fbConfig';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+import sl from 'javascript-time-ago/locale/sl';
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(sl);
+
 const rrfProps = {
   firebase,
   config: firebaseConfig,

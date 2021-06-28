@@ -16,7 +16,7 @@ class DeleteConfirmationModal extends Component {
                 size='small'
                 closeOnEscape={this.props.dismissable}
                 closeOnDimmerClick={this.props.dismissable}
-                trigger={<Button>{this.props.trigger}</Button>}
+                trigger={this.props.triggerElement} //<Button>{this.props.trigger}</Button>
             >
                 <Header icon>
                     <Icon name='trash alternate' />
@@ -31,7 +31,7 @@ class DeleteConfirmationModal extends Component {
                     <Button basic color='red' inverted onClick={() => this.setState({ appendModal: false })}>
                         <Icon name='remove' /> No
                     </Button>
-                    <Button color='green' inverted onClick={() => this.setState({ appendModal: false })}>
+                    <Button color='green' inverted onClick={() => { this.setState({ appendModal: false }); this.props.function(this.props.functionParams) }}>
                         <Icon name='checkmark' /> Yes
                     </Button>
                 </Modal.Actions>

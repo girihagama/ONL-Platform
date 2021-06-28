@@ -4,6 +4,7 @@ import { Menu, Label } from 'semantic-ui-react';
 class Sidemenu extends Component {
     render() {
         return (
+            
             <Menu vertical>
                 <Menu.Item><b>Quick Links</b></Menu.Item>
 

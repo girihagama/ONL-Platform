@@ -5,12 +5,23 @@ class ExportCustomersModal extends Component {
     state = {
         appendModal: false,
         formData: {
-            customerName: ""
+            customerId: (!this.props.functionParams) ? "" : this.props.functionParams[0],
+            customerName: (!this.props.functionParams) ? "" : this.props.functionParams[1]
         },
         formErrors: {
             customerName: null
         }
     };
+
+    handleUpdate = () => {
+        if (this.state.formData.customerName !== "") {
+            this.props.function([this.state.formData.customerId, this.state.formData.customerName]);
+            this.setState({ appendModal: false });
+        } else {
+            var formErrors = { customerName: true }
+            this.setState({ formErrors });
+        }
+    }
 
     render() {
         return (
@@ -21,10 +32,11 @@ class ExportCustomersModal extends Component {
                 size='mini'
                 closeOnEscape={this.props.dismissable}
                 closeOnDimmerClick={this.props.dismissable}
-                trigger={<Button>{this.props.trigger}</Button>}
+                trigger={this.props.triggerElement}
             >
                 <Header>
                     {this.props.dataType}
+                    <Header.Subheader>{(!this.props.functionParams) ? "Customer Name" : this.props.functionParams[1]}</Header.Subheader>
                 </Header>
                 <Modal.Content>
                     <Form>
@@ -43,7 +55,7 @@ class ExportCustomersModal extends Component {
                     <Button basic color='grey' onClick={() => this.setState({ appendModal: false })}>
                         <Icon name='remove' /> Cancel
                     </Button>
-                    <Button color='green' inverted onClick={() => this.setState({ appendModal: false })}>
+                    <Button color='green' inverted onClick={this.handleUpdate}>
                         <Icon name='checkmark' /> Update
                     </Button>
                 </Modal.Actions>
