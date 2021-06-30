@@ -193,7 +193,7 @@ class AddCustomerModal extends Component {
 
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button floated='left' color='gray' onClick={() => {
+                    <Button floated='left' color='grey' onClick={() => {
                         this.setState({ activeStep: 0, showModal: false });
                         this.setState({
                             formData: {

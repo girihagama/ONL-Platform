@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { Button, List, Icon, Message, Label } from 'semantic-ui-react';
 
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import AddEditLocationModal from './AddEditLocationModal';
 
 class BranchListSub extends Component {
     render() {
@@ -32,15 +33,16 @@ class BranchListSub extends Component {
                                                 <Button.Content visible>
                                                     <Icon name='trash' />
                                                 </Button.Content>
-                                            </Button>} function={this.props.function} functionParams={[this.props.functionParams[0], item.id]} dataType="Location" trigger="Delete Location" dismissable={false} description={"Delete [" + item.locationName + "] location of [" + this.props.functionParams[1] + "] customer"} />
-                                            <Button animated='fade'>
-                                                <Button.Content hidden style={{ color: '#e65800' }}>
-                                                    Edit
-                                                </Button.Content>
-                                                <Button.Content visible>
-                                                    <Icon name='pencil' />
-                                                </Button.Content>
-                                            </Button>
+                                            </Button>} function={this.props.function.deleteLocation} functionParams={[this.props.functionParams[0], item.id]} dataType="Location" trigger="Delete Location" dismissable={false} description={"Delete [" + item.locationName + "] location of [" + this.props.functionParams[1] + "] customer"} />
+                                            <AddEditLocationModal data={item} customer={[this.props.functionParams[0], this.props.functionParams[1]]} dataType="Edit Location" mode="edit" function={{ editLocation: this.props.function.editLocation, addLocation : this.props.function.addLocation }} trigger="Edit Location" dismissable={false} triggerElement={
+                                                <Button animated='fade'>
+                                                    <Button.Content hidden style={{ color: '#e65800' }}>
+                                                        Edit
+                                                    </Button.Content>
+                                                    <Button.Content visible>
+                                                        <Icon name='pencil' />
+                                                    </Button.Content>
+                                                </Button>} />
                                         </Button.Group>
                                     </List.Content>
                                     <List.Icon name="location arrow" size='large' verticalAlign="middle" />
@@ -56,7 +58,7 @@ class BranchListSub extends Component {
                                                 :
                                                 Object.entries(item.contact).map(([key, value], index) => {
                                                     return (
-                                                        <Label style={{marginTop:"2px"}}><a href={"callto:"+value}>{value}</a> ({key})</Label>
+                                                        <Label key={index} style={{ marginTop: "2px" }}><a href={"callto:" + value}>{value}</a> ({key})</Label>
                                                     )
                                                 })
                                             }

@@ -49,8 +49,8 @@ class Customers extends Component {
 
     deleteCustomer = (params) => {
         console.log("Delete Customer", params[0]);
+        this.setState({ expandedCustomer: null, expandedCustomerName: null });
         this.props.deleteCustomer(params[0]);
-
     }
 
     deleteLocation = (params) => {
@@ -68,7 +68,7 @@ class Customers extends Component {
     }
 
     render() {
-        console.log({ 'PROPS': this.props }, { 'STATE': this.state }, this.state.selectedCustomers);
+        console.log({ 'PROPS': this.props }, { 'STATE': this.state });
         //console.log(md5(shortid.generate()), timeAgo.format(new Date()));
 
         return (
@@ -210,7 +210,10 @@ class Customers extends Component {
                                 <Header>Customer Locations
                                     {(this.state.expandedCustomerName) ? <small> ({this.state.expandedCustomerName})</small> : ""}
                                     <small style={{ float: 'right' }}>
-                                        <Button disabled={(!this.state.expandedCustomer)} size='small' simple style={{ backgroundColor: 'white', color: '#398CCB' }} icon circular><Icon name='add' /> Add</Button></small></Header><hr />
+                                        <AddEditLocationModal customer={[this.state.expandedCustomer, this.state.expandedCustomerName]} dataType="Add Location" mode="add" function={{ addLocation: this.props.addLocation }} trigger="Add Location" dismissable={false} triggerElement={
+                                            <Button size='small' disabled={(!this.state.expandedCustomer)} simple style={{ backgroundColor: 'white', color: '#398CCB' }} icon circular><Icon name='add' /> Add</Button>}
+                                        />
+                                    </small></Header><hr />
                                 {
                                     (!this.state.expandedCustomer)
                                         ?
@@ -223,7 +226,7 @@ class Customers extends Component {
                                         </Message>
                                         :
                                         <div>
-                                            <BranchListSub function={this.deleteLocation} functionParams={[this.state.expandedCustomer, this.state.expandedCustomerName]} doc={this.state.expandedCustomer} />
+                                            <BranchListSub function={{ deleteLocation: this.deleteLocation, editLocation: this.props.editLocation }} functionParams={[this.state.expandedCustomer, this.state.expandedCustomerName]} doc={this.state.expandedCustomer} />
                                         </div>
                                 }
                             </Grid.Column>
@@ -245,12 +248,12 @@ class Customers extends Component {
                                 <AppendModal dismissable={false} />
                                 <ExportSelectedCustomersModal dataType="Export Customers & Locations" trigger="Selected Export" description="Do you need to export selected customers and their locations?" />
                                 <AddCustomerModal trigger="Add Customer" dismissable={false} />
-                                <AddEditLocationModal dataType="Add New Location" function={this.addLocation} trigger="Add Location" dismissable={false} />
-                                <DeleteConfirmationModal triggerElement={<Button disabled>Delete Customer</Button>} function={this.deleteCustomer} functionParams={["WnmG36Fo0KPbO0BrdDxR"]} dataType="Customer" trigger="Delete Customer" dismissable={false} description="Delete [XXX] customer" />
-                                <EditCustomerModal triggerElement={<Button disabled>Edit Customer</Button>} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} /><hr />
-                                <DeleteConfirmationModal triggerElement={<Button disabled>Delete Location</Button>} dataType="Location" function={this.deleteLocation} functionParams={["UYbCFcIy2FXAiKjNcHN6", "LzaQl4NMhKYzcsAH93yz"]} trigger="Delete Location" dismissable={false} description="Delete [XXX] location from [XXX] customer" />
-                                <AddEditLocationModal dataType="Edit Location" trigger="Edit Location" dismissable={false} />
-                                <DeleteConfirmationModal triggerElement={<Button>Delete Selected</Button>} dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" />
+                                {/* <AddEditLocationModal customerName="Hello Inc." dataType="Add New Location" mode="add" function={this.addLocation} trigger="Add Location" dismissable={false} /> */}
+                                {/* <DeleteConfirmationModal triggerElement={<Button disabled>Delete Customer</Button>} function={this.deleteCustomer} functionParams={["WnmG36Fo0KPbO0BrdDxR"]} dataType="Customer" trigger="Delete Customer" dismissable={false} description="Delete [XXX] customer" /> */}
+                                {/* <EditCustomerModal triggerElement={<Button disabled>Edit Customer</Button>} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} /><hr /> */}
+                                {/* <DeleteConfirmationModal triggerElement={<Button disabled>Delete Location</Button>} dataType="Location" function={this.deleteLocation} functionParams={["UYbCFcIy2FXAiKjNcHN6", "LzaQl4NMhKYzcsAH93yz"]} trigger="Delete Location" dismissable={false} description="Delete [XXX] location from [XXX] customer" /> */}
+                                {/* <AddEditLocationModal customerName="Hello Inc." dataType="Edit Location" mode="edit" trigger="Edit Location" dismissable={false} /> */}
+                                {/* <DeleteConfirmationModal triggerElement={<Button>Delete Selected</Button>} dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" /> */}
                                 <ExportCustomersModal dataType="Export Customers & Locations" trigger="Bulk Export" description="Do you need to export all the customers and their locations in the system?" />
                             </Grid.Column>
                         </Grid.Row>
@@ -285,7 +288,7 @@ const mdtp = (dispatch) => {
 export default compose(
     firestoreConnect(
         (props) => [
-            { collection: 'customers', limit: 10, orderBy: ["createdDate", "desc"]},
+            { collection: 'customers', orderBy: ["createdDate", "desc"], limit: 10, startAfter : "" },
         ]
     ),
     connect(mstp, mdtp)

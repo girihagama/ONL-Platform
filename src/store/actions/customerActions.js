@@ -51,9 +51,9 @@ export const addLocation = (customerId, locationData) => {
         // const firebase = getFirebase();
 
         firestore.collection('customers').doc(customerId).collection('locations')
-            .add(
-                locationData
-            )
+            .add({
+                ...locationData
+            })
             .then(() => {
                 console.log('Location Added!');
             });
@@ -276,10 +276,10 @@ export const customerSearch = (keyword) => {
         // const firebase = getFirebase();
 
         firestore.collection('customers').orderBy('customerName').startAt(keyword).endAt(keyword + '\uf8ff')
-        .get()
-        .then((res)=>{
-            console.log(res);
-        });
+            .get()
+            .then((res) => {
+                console.log(res);
+            });
 
         // firebase.auth()
         //     .createUserWithEmailAndPassword(username, password)
