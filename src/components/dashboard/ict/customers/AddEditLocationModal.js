@@ -99,23 +99,23 @@ class ExportCustomersModal extends Component {
             if (this.state.mode == "edit") {
                 console.log("Submit updates");
                 var locationData = {
-                    locationName : this.state.formData.locationName,
-                    locationEmail : this.state.formData.locationEmail,
+                    locationName: this.state.formData.locationName,
+                    locationEmail: this.state.formData.locationEmail,
                     locationAddress: this.state.formData.locationAddress,
-                    contact:{
-                        [this.state.formData.contactPerson] : this.state.formData.contactNumber
+                    contact: {
+                        [this.state.formData.contactPerson]: this.state.formData.contactNumber
                     }
                 }
                 this.props.function.editLocation(this.state.formData.customerId, this.state.formData.locationId, locationData);
                 this.setState({ appendModal: false });
-            }else if (this.state.mode == "add") {
+            } else if (this.state.mode == "add") {
                 console.log("Submit new");
                 var locationData = {
-                    locationName : this.state.formData.locationName,
-                    locationEmail : this.state.formData.locationEmail,
+                    locationName: this.state.formData.locationName,
+                    locationEmail: this.state.formData.locationEmail,
                     locationAddress: this.state.formData.locationAddress,
-                    contact:{
-                        [this.state.formData.contactPerson] : this.state.formData.contactNumber
+                    contact: {
+                        [this.state.formData.contactPerson]: this.state.formData.contactNumber
                     }
                 }
                 this.props.function.addLocation(this.state.formData.customerId, locationData);
@@ -126,8 +126,12 @@ class ExportCustomersModal extends Component {
         }
     }
 
+    componentWillUnmount(){
+        console.log("Unmounted");
+    }
+
     render() {
-        console.log({"STATE":this.state},{"PROPS":this.props});
+        console.log({ "STATE": this.state }, { "PROPS": this.props });
 
         return (
             <Modal

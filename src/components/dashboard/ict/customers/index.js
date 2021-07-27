@@ -20,7 +20,8 @@ import AddEditLocationModal from './AddEditLocationModal';
 import BranchCountSub from './BranchCountSub';
 import ContactNumbersSub from './ContactNumbersSub';
 import BranchListSub from './BranchListSub';
-import CustomerSearch from './CustomerSearch';
+import SearchCustomer from './SearchCustomer';
+import CustomerListSub from './Customer_List/CustomerListSub';
 
 import { addCustomer, addLocation, editCustomer, editLocation, deleteCustomer, deleteLocation, customerSearch } from '../../../../store/actions/customerActions';
 
@@ -90,18 +91,10 @@ class Customers extends Component {
                         </Grid.Row>
 
                         <Grid.Row columns={16}>
-                            <Grid.Column width={4}>
-                                {/* <Search fluid input={{ icon: 'search', iconPosition: 'right' }} placeholder="Search Customers" /> */}
-                                <Input list='customers' style={{ float: 'left', display: 'inline-block' }} iconPosition='left' loading={false} icon='search' placeholder='Search Customers' onChange={(e) => { (e.target.value == "") ? this.setState({ searchKeyword: null }) : this.setState({ searchKeyword: e.target.value }) }} />
-                                {
-                                    (this.state.searchKeyword == null)
-                                        ?
-                                        <datalist id='customers' />
-                                        :
-                                        <CustomerSearch keyword={this.state.searchKeyword} />
-                                }
+                            <Grid.Column width={6}>
+                                <SearchCustomer />
                             </Grid.Column>
-                            <Grid.Column width={12} textAlign="right">
+                            <Grid.Column width={10} textAlign="right">
                                 <Button as='div' labelPosition='right'>
                                     <Button primary icon>
                                         <Icon name='add' /> Add Customer </Button>
@@ -134,6 +127,8 @@ class Customers extends Component {
                                         </Message>
                                         : //customer records available
                                         <div>
+                                            {/* <CustomerListSub /> */}
+
                                             <List relaxed divided celled className={['optionList']}>
                                                 {
                                                     (this.props.firestore.ordered.customers).map((item, index) => {
@@ -288,7 +283,7 @@ const mdtp = (dispatch) => {
 export default compose(
     firestoreConnect(
         (props) => [
-            { collection: 'customers', orderBy: ["createdDate", "desc"], limit: 10, startAfter : "" },
+            { collection: 'customers', orderBy: ["createdDate", "desc"], limit: 10, startAfter: "" },
         ]
     ),
     connect(mstp, mdtp)
