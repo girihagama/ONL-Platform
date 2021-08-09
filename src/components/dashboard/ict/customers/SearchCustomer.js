@@ -22,10 +22,10 @@ class SearchCustomer extends Component {
         var processed = [];
         resultSet.map((item) => {
             var row = {
-                title : item.customerName,
-                description : "Added On: " + item.createdDate,
+                title: item.customerName,
+                description: "Added On: " + item.createdDate,
                 //price : item.id,
-                data : item
+                data: item
             }
             // processed = processed.slice(5); //limit number of results
             processed.push(row);
@@ -36,6 +36,7 @@ class SearchCustomer extends Component {
     handleResultSelect = (e, { result }) => {
         this.setState({ value: result.customerName });
         console.log('Selected', result);
+        this.props.functions[0](result.data.id, result.data.customerName);
     };
 
     handleSearchChanage = (e, { value }) => {

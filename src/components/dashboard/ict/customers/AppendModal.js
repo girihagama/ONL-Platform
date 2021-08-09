@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Icon, Header, Label, Message } from 'semantic-ui-react';
 import { InputFile } from 'semantic-ui-react-input-file';
 
-class DeleteConfirmation extends Component {
+class AppendModal extends Component {
     state = {
         appendModal: false,
         appendList: null,
@@ -65,7 +65,7 @@ class DeleteConfirmation extends Component {
                 size='tiny'
                 closeOnEscape={this.props.dismissable}
                 closeOnDimmerClick={this.props.dismissable}
-                trigger={<Button>Append</Button>}
+                trigger={this.props.triggerElement}//<Button>Append</Button>
             >
                 <Header>
                     Append Customer Records
@@ -121,4 +121,4 @@ class DeleteConfirmation extends Component {
         );
     }
 }
-export default DeleteConfirmation
+export default AppendModal;

@@ -48,6 +48,10 @@ class Customers extends Component {
         this.setState({ selectedCustomers: obj });
     }
 
+    searchSelectCustomer = (expandedCustomer, expandedCustomerName) => {
+        this.setState({ expandedCustomer, expandedCustomerName });
+    }
+
     deleteCustomer = (params) => {
         console.log("Delete Customer", params[0]);
         this.setState({ expandedCustomer: null, expandedCustomerName: null });
@@ -83,7 +87,7 @@ class Customers extends Component {
                             </Grid.Column>
                             <Grid.Column width={6}>
                                 <Button.Group floated='right'>
-                                    <Button>Append</Button>
+                                    <AppendModal dismissable={false} triggerElement={<Button>Append</Button>} />                                    
                                     <Button.Or />
                                     <Button primary>Export</Button>
                                 </Button.Group>
@@ -92,7 +96,7 @@ class Customers extends Component {
 
                         <Grid.Row columns={16}>
                             <Grid.Column width={6}>
-                                <SearchCustomer />
+                                <SearchCustomer functions={[this.searchSelectCustomer]} />
                             </Grid.Column>
                             <Grid.Column width={10} textAlign="right">
                                 <Button as='div' labelPosition='right'>
@@ -240,7 +244,7 @@ class Customers extends Component {
                         <Grid.Row columns={16}>
                             <Grid.Column width={16}>
                                 <center>Modals: <br /></center>
-                                <AppendModal dismissable={false} />
+                                {/* <AppendModal dismissable={false} triggerElement={<Button disabled>Delete Customer</Button>}/> */}
                                 <ExportSelectedCustomersModal dataType="Export Customers & Locations" trigger="Selected Export" description="Do you need to export selected customers and their locations?" />
                                 <AddCustomerModal trigger="Add Customer" dismissable={false} />
                                 {/* <AddEditLocationModal customerName="Hello Inc." dataType="Add New Location" mode="add" function={this.addLocation} trigger="Add Location" dismissable={false} /> */}
