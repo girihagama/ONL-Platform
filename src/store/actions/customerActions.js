@@ -1,12 +1,16 @@
-export const addCustomer = (customerData, locationData) => {
+import moment from 'moment';
+
+export const addCustomer = (customerData) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
-        // const firebase = getFirebase();
+        //const firebase = getFirebase();
+
+        var genDate = moment(new Date()).format('YYYY/MM/DD HH:mm:ss');
 
         firestore.collection('customers')
-            .add(customerData)
+            .add({ customerName: customerData, createdDate: genDate })
             .then((res) => {
-                console.log('Customer Added!', res);
+                //console.log('Customer Added!', res);
             });
 
         // firebase.auth()
@@ -50,13 +54,15 @@ export const addLocation = (customerId, locationData) => {
         const firestore = getFirestore();
         // const firebase = getFirebase();
 
-        firestore.collection('customers').doc(customerId).collection('locations')
-            .add({
-                ...locationData
-            })
-            .then(() => {
-                console.log('Location Added!');
-            });
+        console.log(customerId, locationData);
+
+        // firestore.collection('customers').doc(customerId).collection('locations')
+        //     .add({
+        //         ...locationData
+        //     })
+        //     .then(() => {
+        //         console.log('Location Added!');
+        //     });
 
         // firebase.auth()
         //     .createUserWithEmailAndPassword(username, password)

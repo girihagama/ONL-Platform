@@ -13,7 +13,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 import ExportSelectedCustomersModal from './ExportSelectedCustomersModal';
 import ExportCustomersModal from './ExportCustomersModal';
 import AppendModal from './AppendModal';
-import AddCustomerModal from './AddCustomerModal';
+import AddCustomerSimplifiedModal from './AddCustomerSimplifiedModal';
 import EditCustomerModal from './EditCustomerModal';
 import AddEditLocationModal from './AddEditLocationModal';
 
@@ -52,6 +52,11 @@ class Customers extends Component {
         this.setState({ expandedCustomer, expandedCustomerName });
     }
 
+    addCustomer = (params) => {
+        console.log("Add Customer", params[0]);
+        this.props.addCustomer(params[0]);
+    }
+
     deleteCustomer = (params) => {
         console.log("Delete Customer", params[0]);
         this.setState({ expandedCustomer: null, expandedCustomerName: null });
@@ -87,9 +92,9 @@ class Customers extends Component {
                             </Grid.Column>
                             <Grid.Column width={6}>
                                 <Button.Group floated='right'>
-                                    <AppendModal dismissable={false} triggerElement={<Button>Append</Button>} />                                    
+                                    <AppendModal dismissable={false} triggerElement={<Button>Append</Button>} />
                                     <Button.Or />
-                                    <Button primary>Export</Button>
+                                    <ExportCustomersModal dataType="Export Customers & Locations" triggerElement={<Button primary>Export</Button>} trigger="Bulk Export" description="Do you need to export all the customers and their locations in the system?" />
                                 </Button.Group>
                             </Grid.Column>
                         </Grid.Row>
@@ -100,8 +105,7 @@ class Customers extends Component {
                             </Grid.Column>
                             <Grid.Column width={10} textAlign="right">
                                 <Button as='div' labelPosition='right'>
-                                    <Button primary icon>
-                                        <Icon name='add' /> Add Customer </Button>
+                                    <AddCustomerSimplifiedModal triggerElement={<Button primary icon><Icon name='add' /> Add Customer</Button>} trigger="Add New Customer" dismissable={false} functions={[this.addCustomer]}/>
                                     <Label as='a' basic pointing='left'>
                                         Total {235}
                                     </Label>
@@ -114,7 +118,7 @@ class Customers extends Component {
                                 <Header>
                                     List of Customers
                                     <small> (recent)</small>
-                                    <small as='h6' style={{ float: 'right' }}>1/2 Page of 40 Results</small>
+                                    <small as='h6' style={{ float: 'right' }}>1/1 Page of 10 Results</small>
                                     <small><Dropdown disabled={false} simple item text=' ' placeholder=' ' scrolling options={[{ key: 'Delete Selected', text: 'Delete Selected', value: 'Delete Selected' }, { key: 'Export Selected', text: 'Export Selected', value: 'Export Selected' }]} /></small>
                                 </Header>
                                 <hr />
@@ -187,7 +191,7 @@ class Customers extends Component {
                                                 }
                                             </List>
 
-                                            <Pagination
+                                            {/* <Pagination                                                
                                                 boundaryRange={0}
                                                 defaultActivePage={1}
                                                 ellipsisItem={null}
@@ -199,7 +203,7 @@ class Customers extends Component {
                                             />
                                             <Popup content="Items per load" trigger={
                                                 <Dropdown style={{ float: 'right' }} compact selection defaultValue={20} options={[{ key: 20, text: '20', value: 20 }, { key: 50, text: '50', value: 50 }, { key: 100, text: '100', value: 100 }]} />
-                                            } />
+                                            } /> */}
 
                                         </div>
                                 }
@@ -246,14 +250,14 @@ class Customers extends Component {
                                 <center>Modals: <br /></center>
                                 {/* <AppendModal dismissable={false} triggerElement={<Button disabled>Delete Customer</Button>}/> */}
                                 <ExportSelectedCustomersModal dataType="Export Customers & Locations" trigger="Selected Export" description="Do you need to export selected customers and their locations?" />
-                                <AddCustomerModal trigger="Add Customer" dismissable={false} />
+                                {/* <AddCustomerModal trigger="Add Customer" dismissable={false} /> */}
                                 {/* <AddEditLocationModal customerName="Hello Inc." dataType="Add New Location" mode="add" function={this.addLocation} trigger="Add Location" dismissable={false} /> */}
                                 {/* <DeleteConfirmationModal triggerElement={<Button disabled>Delete Customer</Button>} function={this.deleteCustomer} functionParams={["WnmG36Fo0KPbO0BrdDxR"]} dataType="Customer" trigger="Delete Customer" dismissable={false} description="Delete [XXX] customer" /> */}
                                 {/* <EditCustomerModal triggerElement={<Button disabled>Edit Customer</Button>} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} /><hr /> */}
                                 {/* <DeleteConfirmationModal triggerElement={<Button disabled>Delete Location</Button>} dataType="Location" function={this.deleteLocation} functionParams={["UYbCFcIy2FXAiKjNcHN6", "LzaQl4NMhKYzcsAH93yz"]} trigger="Delete Location" dismissable={false} description="Delete [XXX] location from [XXX] customer" /> */}
                                 {/* <AddEditLocationModal customerName="Hello Inc." dataType="Edit Location" mode="edit" trigger="Edit Location" dismissable={false} /> */}
-                                {/* <DeleteConfirmationModal triggerElement={<Button>Delete Selected</Button>} dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" /> */}
-                                <ExportCustomersModal dataType="Export Customers & Locations" trigger="Bulk Export" description="Do you need to export all the customers and their locations in the system?" />
+                                <DeleteConfirmationModal triggerElement={<Button>Delete Selected</Button>} dataType="Selected Customers" trigger="Delete Selected" dismissable={false} description="Delete [XXX,XXX] customers" />
+                                {/* <ExportCustomersModal dataType="Export Customers & Locations" trigger="Bulk Export" description="Do you need to export all the customers and their locations in the system?" /> */}
                             </Grid.Column>
                         </Grid.Row>
 
@@ -274,7 +278,7 @@ const mstp = (state) => {
 
 const mdtp = (dispatch) => {
     return {
-        addCustomer: (customerData, locationData) => dispatch(addCustomer(customerData, locationData)),
+        addCustomer: (customerData) => dispatch(addCustomer(customerData)),
         addLocation: (customerId, locationData) => dispatch(addLocation(customerId, locationData)),
         editCustomer: (customerId, customerData) => dispatch(editCustomer(customerId, customerData)),
         editLocation: (customerId, locationId, locationData) => dispatch(editLocation(customerId, locationId, locationData)),

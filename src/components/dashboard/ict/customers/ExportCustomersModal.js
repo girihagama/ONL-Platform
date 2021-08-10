@@ -16,7 +16,7 @@ class ExportCustomersModal extends Component {
                 size='small'
                 closeOnEscape={this.props.dismissable}
                 closeOnDimmerClick={this.props.dismissable}
-                trigger={<Button>{this.props.trigger}</Button>}
+                trigger={this.props.triggerElement}
             >
                 <Header icon>
                     <Icon name='cloud download' />
