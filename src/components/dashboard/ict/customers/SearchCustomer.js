@@ -36,7 +36,9 @@ class SearchCustomer extends Component {
     handleResultSelect = (e, { result }) => {
         this.setState({ value: result.customerName });
         console.log('Selected', result);
+        
         this.props.functions[0](result.data.id, result.data.customerName);
+        this.props.functions[1](this.state.results);
     };
 
     handleSearchChanage = (e, { value }) => {
@@ -50,8 +52,17 @@ class SearchCustomer extends Component {
             this.setState({
                 isLoading: false,
                 results: _.filter(this.state.source, isMatch),
-            })
+            });
         }, 300);
+
+        //update customerlist
+        if (value == '') {
+            this.props.functions[1]([]);
+            console.log("set to []");
+        } else {
+            this.props.functions[1](this.state.results);   
+            console.log("set to results");             
+        }
     }
 
     render() {

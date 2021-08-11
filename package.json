@@ -27,6 +27,7 @@
     "semantic-ui-react": "^2.0.3",
     "semantic-ui-react-input-file": "^1.0.3",
     "shortid": "^2.2.16",
+    "simple-react-validator": "^1.6.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

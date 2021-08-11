@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Button, Icon, Header, Form, Popup, Input } from 'semantic-ui-react';
+import SimpleReactValidator from 'simple-react-validator';
 
 class AddCustomerSimplifiedModal extends Component {
+    validator = new SimpleReactValidator();
+
     state = {
         appendModal: false,
         formData: {
@@ -25,6 +28,22 @@ class AddCustomerSimplifiedModal extends Component {
         }
     }
 
+    handleSubmit = () => {
+        if (this.validator.allValid()) {
+            //alert('You submitted the form and stuff!');
+            this.props.functions[0]([this.state.formData.customerName]);
+            var formData = {
+                customerName: ""
+            }
+            this.setState({ formData, appendModal: false });
+        } else {
+            this.validator.showMessages();
+            // rerender to show messages for the first time
+            // you can use the autoForceUpdate option to do this automatically`
+            this.forceUpdate();
+        }
+    }
+
     render() {
         return (
             <Modal
@@ -45,11 +64,12 @@ class AddCustomerSimplifiedModal extends Component {
                         <Form.Field>
                             <label>Customer Name *</label>
                             <Popup content='Required field' position="bottom left" trigger={
-                                <Input error={this.state.formErrors.customerName} required value={this.state.formData.customerName} placeholder='Enter name of the customer' autoFocus
+                                <Input name="customerName" error={this.state.formErrors.customerName} required value={this.state.formData.customerName} placeholder='Enter name of the customer' autoFocus
                                     onChange={(e) => { (e.target.value == 0) ? this.state.formErrors.customerName = true : this.state.formErrors.customerName = false; var field = { ...this.state.formData }; field.customerName = e.target.value; this.setState({ formData: field }) }}
                                 />
                             }
                             />
+                            {this.validator.message('customerName', this.state.formData.customerName, 'required')}
                         </Form.Field>
                     </Form>
                 </Modal.Content>
@@ -57,7 +77,7 @@ class AddCustomerSimplifiedModal extends Component {
                     <Button basic color='grey' onClick={() => this.setState({ appendModal: false })}>
                         <Icon name='remove' /> Cancel
                     </Button>
-                    <Button color='green' inverted onClick={this.handleUpdate}>
+                    <Button color='green' inverted onClick={this.handleSubmit}>
                         <Icon name='checkmark' /> Insert
                     </Button>
                 </Modal.Actions>

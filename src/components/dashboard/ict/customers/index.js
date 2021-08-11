@@ -30,7 +30,8 @@ class Customers extends Component {
         expandedCustomer: null,
         expandedCustomerName: null,
         selectedCustomers: {},
-        searchKeyword: null
+        searchKeyword: null,
+        searchResults: []
     }
 
     handleCheck = (id, checked) => {
@@ -46,6 +47,10 @@ class Customers extends Component {
             }
         });
         this.setState({ selectedCustomers: obj });
+    }
+
+    searchResults = (results) => {
+        this.setState({ searchResults: results });
     }
 
     searchSelectCustomer = (expandedCustomer, expandedCustomerName) => {
@@ -78,7 +83,7 @@ class Customers extends Component {
     }
 
     render() {
-        console.log({ 'PROPS': this.props }, { 'STATE': this.state });
+        console.log({ 'PROPS': this.props }, { 'STATE': this.state }, this.state.searchResults.length);
         //console.log(md5(shortid.generate()), timeAgo.format(new Date()));
 
         return (
@@ -101,11 +106,11 @@ class Customers extends Component {
 
                         <Grid.Row columns={16}>
                             <Grid.Column width={6}>
-                                <SearchCustomer functions={[this.searchSelectCustomer]} />
+                                <SearchCustomer functions={[this.searchSelectCustomer, this.searchResults]} />
                             </Grid.Column>
                             <Grid.Column width={10} textAlign="right">
                                 <Button as='div' labelPosition='right'>
-                                    <AddCustomerSimplifiedModal triggerElement={<Button primary icon><Icon name='add' /> Add Customer</Button>} trigger="Add New Customer" dismissable={false} functions={[this.addCustomer]}/>
+                                    <AddCustomerSimplifiedModal triggerElement={<Button primary icon><Icon name='add' /> Add Customer</Button>} trigger="Add New Customer" dismissable={false} functions={[this.addCustomer]} />
                                     <Label as='a' basic pointing='left'>
                                         Total {235}
                                     </Label>
@@ -139,55 +144,107 @@ class Customers extends Component {
 
                                             <List relaxed divided celled className={['optionList']}>
                                                 {
-                                                    (this.props.firestore.ordered.customers).map((item, index) => {
-                                                        return (
-                                                            <List.Item className='optionListItem' key={item.id}>
-                                                                <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
-                                                                    <Button.Group size='tiny'>
-                                                                        <DeleteConfirmationModal triggerElement={<Button animated='fade'>
-                                                                            {/* <Button.Content hidden style={{ color: 'red' }}>
+                                                    (this.state.searchResults.length > 0)
+                                                        ? // when search results available
+                                                        (this.state.searchResults).map((item, index) => {
+                                                            return (
+                                                                <List.Item className='optionListItem' key={item.id}>
+                                                                    <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
+                                                                        <Button.Group size='tiny'>
+                                                                            <DeleteConfirmationModal triggerElement={<Button animated='fade'>
+                                                                                {/* <Button.Content hidden style={{ color: 'red' }}>
                                                                                 Delete
                                                                             </Button.Content> */}
-                                                                            <Button.Content hidden style={{ color: 'red' }}>Delete</Button.Content>
-                                                                            <Button.Content visible>
-                                                                                <Icon name='trash' />
-                                                                            </Button.Content>
-                                                                        </Button>} function={this.deleteCustomer} functionParams={[item.id]} dataType="Customer" trigger="Delete Customer" dismissable={false} description={"Delete [" + item.customerName + "] customer"} />
-                                                                        <EditCustomerModal function={this.editCustomer} functionParams={[item.id, item.customerName]} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} triggerElement={<Button animated='fade'>
-                                                                            <Button.Content hidden style={{ color: '#e65800' }}>
-                                                                                Edit
-                                                                            </Button.Content>
-                                                                            <Button.Content visible>
-                                                                                <Icon name='pencil' />
-                                                                            </Button.Content>
-                                                                        </Button>} />
-                                                                        <Button animated='fade' color='blue' onClick={() => { this.setState({ expandedCustomer: item.id, expandedCustomerName: item.customerName }) }}>
-                                                                            <Button.Content hidden>
-                                                                                Expand
-                                                                            </Button.Content>
-                                                                            <Button.Content visible>
-                                                                                <Icon name='arrow right' />
-                                                                            </Button.Content>
-                                                                        </Button>
-                                                                    </Button.Group>
-                                                                </List.Content>
-                                                                <List.Icon name="user" size='large' verticalAlign="middle" />
-                                                                <List.Content>
-                                                                    <List.Header>
-                                                                        <Checkbox key={item.id} onChange={(e, value) => this.handleCheck(item.id, value.checked)} label={(item.customerName) ? item.customerName : "N/A"} />
-                                                                    </List.Header>
-                                                                    <List.Description style={{ marginTop: '5px' }}>
-                                                                        <Label>
-                                                                            <Icon name='save' />
-                                                                            Created On : {new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss")).toDateString()}
-                                                                        </Label>
-                                                                        <Label>{(!item.createdDate) ? "N/A" : <ReactTimeAgo date={new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss"))} locale="en-SL" />}</Label>
-                                                                        {/* <BranchCountSub doc={item.id} /> */}
-                                                                    </List.Description>
-                                                                </List.Content>
-                                                            </List.Item>
-                                                        )
-                                                    })
+                                                                                <Button.Content hidden style={{ color: 'red' }}>Delete</Button.Content>
+                                                                                <Button.Content visible>
+                                                                                    <Icon name='trash' />
+                                                                                </Button.Content>
+                                                                            </Button>} function={this.deleteCustomer} functionParams={[item.id]} dataType="Customer" trigger="Delete Customer" dismissable={false} description={"Delete [" + item.customerName + "] customer"} />
+                                                                            <EditCustomerModal function={this.editCustomer} functionParams={[item.id, item.customerName]} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} triggerElement={<Button animated='fade'>
+                                                                                <Button.Content hidden style={{ color: '#e65800' }}>
+                                                                                    Edit
+                                                                                </Button.Content>
+                                                                                <Button.Content visible>
+                                                                                    <Icon name='pencil' />
+                                                                                </Button.Content>
+                                                                            </Button>} />
+                                                                            <Button animated='fade' color='blue' onClick={() => { this.setState({ expandedCustomer: item.id, expandedCustomerName: item.customerName }) }}>
+                                                                                <Button.Content hidden>
+                                                                                    Expand
+                                                                                </Button.Content>
+                                                                                <Button.Content visible>
+                                                                                    <Icon name='arrow right' />
+                                                                                </Button.Content>
+                                                                            </Button>
+                                                                        </Button.Group>
+                                                                    </List.Content>
+                                                                    <List.Icon name="user" size='large' verticalAlign="middle" />
+                                                                    <List.Content>
+                                                                        <List.Header>
+                                                                            <Checkbox key={item.id} onChange={(e, value) => this.handleCheck(item.id, value.checked)} label={(item.customerName) ? item.customerName : "N/A"} />
+                                                                        </List.Header>
+                                                                        <List.Description style={{ marginTop: '5px' }}>
+                                                                            <Label>
+                                                                                <Icon name='save' />
+                                                                                Created On : {new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss")).toDateString()}
+                                                                            </Label>
+                                                                            <Label>{(!item.createdDate) ? "N/A" : <ReactTimeAgo date={new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss"))} locale="en-SL" />}</Label>
+                                                                            {/* <BranchCountSub doc={item.id} /> */}
+                                                                        </List.Description>
+                                                                    </List.Content>
+                                                                </List.Item>
+                                                            )
+                                                        })
+                                                        : // when search results are not available
+                                                        (this.props.firestore.ordered.customers).map((item, index) => {
+                                                            return (
+                                                                <List.Item className='optionListItem' key={item.id}>
+                                                                    <List.Content floated='right' className='optionItems' style={{ display: 'none' }}>
+                                                                        <Button.Group size='tiny'>
+                                                                            <DeleteConfirmationModal triggerElement={<Button animated='fade'>
+                                                                                {/* <Button.Content hidden style={{ color: 'red' }}>
+                                                                                Delete
+                                                                            </Button.Content> */}
+                                                                                <Button.Content hidden style={{ color: 'red' }}>Delete</Button.Content>
+                                                                                <Button.Content visible>
+                                                                                    <Icon name='trash' />
+                                                                                </Button.Content>
+                                                                            </Button>} function={this.deleteCustomer} functionParams={[item.id]} dataType="Customer" trigger="Delete Customer" dismissable={false} description={"Delete [" + item.customerName + "] customer"} />
+                                                                            <EditCustomerModal function={this.editCustomer} functionParams={[item.id, item.customerName]} dataType="Edit Customer" trigger="Edit Customer" dismissable={false} triggerElement={<Button animated='fade'>
+                                                                                <Button.Content hidden style={{ color: '#e65800' }}>
+                                                                                    Edit
+                                                                                </Button.Content>
+                                                                                <Button.Content visible>
+                                                                                    <Icon name='pencil' />
+                                                                                </Button.Content>
+                                                                            </Button>} />
+                                                                            <Button animated='fade' color='blue' onClick={() => { this.setState({ expandedCustomer: item.id, expandedCustomerName: item.customerName }) }}>
+                                                                                <Button.Content hidden>
+                                                                                    Expand
+                                                                                </Button.Content>
+                                                                                <Button.Content visible>
+                                                                                    <Icon name='arrow right' />
+                                                                                </Button.Content>
+                                                                            </Button>
+                                                                        </Button.Group>
+                                                                    </List.Content>
+                                                                    <List.Icon name="user" size='large' verticalAlign="middle" />
+                                                                    <List.Content>
+                                                                        <List.Header>
+                                                                            <Checkbox key={item.id} onChange={(e, value) => this.handleCheck(item.id, value.checked)} label={(item.customerName) ? item.customerName : "N/A"} />
+                                                                        </List.Header>
+                                                                        <List.Description style={{ marginTop: '5px' }}>
+                                                                            <Label>
+                                                                                <Icon name='save' />
+                                                                                Created On : {new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss")).toDateString()}
+                                                                            </Label>
+                                                                            <Label>{(!item.createdDate) ? "N/A" : <ReactTimeAgo date={new Date(moment(item.createdDate, "YYYY-MM-DD hh:mm:ss"))} locale="en-SL" />}</Label>
+                                                                            {/* <BranchCountSub doc={item.id} /> */}
+                                                                        </List.Description>
+                                                                    </List.Content>
+                                                                </List.Item>
+                                                            )
+                                                        })
                                                 }
                                             </List>
 

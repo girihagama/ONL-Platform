@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Icon, Header, Form, Step, Input, Popup, Label } from 'semantic-ui-react';
 
-class AddCustomerModal extends Component {
+class AddCustomerModal extends Component {   
     state = {
         showModal: false,
         activeStep: 0,
@@ -65,7 +65,7 @@ class AddCustomerModal extends Component {
         for (var key in this.state.formErrors) {
             if (this.state.formErrors.hasOwnProperty(key)) {
                 //console.log(key + " -> " + this.state.formErrors[key]);
-                if (this.state.formErrors[key] == true) {                    
+                if (this.state.formErrors[key] == true) {
                     return false;
                 }
             }
