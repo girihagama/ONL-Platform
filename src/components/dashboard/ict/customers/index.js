@@ -34,6 +34,10 @@ class Customers extends Component {
         searchResults: []
     }
 
+    getExpanededCustomer() {
+        return this.state.expandedCustomer;
+    }
+
     handleCheck = (id, checked) => {
         //console.log(id, this.state.selectedCustomers.indexOf(id));
         var selected = this.state.selectedCustomers;
@@ -112,7 +116,7 @@ class Customers extends Component {
                                 <Button as='div' labelPosition='right'>
                                     <AddCustomerSimplifiedModal triggerElement={<Button primary icon><Icon name='add' /> Add Customer</Button>} trigger="Add New Customer" dismissable={false} functions={[this.addCustomer]} />
                                     <Label as='a' basic pointing='left'>
-                                        Total {235}
+                                        Total {!(this.props.firestore.ordered.searchList) ? "#" : this.props.firestore.ordered.searchList.length}
                                     </Label>
                                 </Button>
                             </Grid.Column>
@@ -270,7 +274,7 @@ class Customers extends Component {
                                 <Header>Customer Locations
                                     {(this.state.expandedCustomerName) ? <small> ({this.state.expandedCustomerName})</small> : ""}
                                     <small style={{ float: 'right' }}>
-                                        <AddEditLocationModal customer={[this.state.expandedCustomer, this.state.expandedCustomerName]} dataType="Add Location" mode="add" function={{ addLocation: this.props.addLocation }} trigger="Add Location" dismissable={false} triggerElement={
+                                        <AddEditLocationModal getExpanededCustomer={this.getExpanededCustomer()} customer={[this.state.expandedCustomer, this.state.expandedCustomerName]} dataType="Add Location" mode="add" function={{ addLocation: this.props.addLocation }} trigger="Add Location" dismissable={false} triggerElement={
                                             <Button size='small' disabled={(!this.state.expandedCustomer)} simple style={{ backgroundColor: 'white', color: '#398CCB' }} icon circular><Icon name='add' /> Add</Button>}
                                         />
                                     </small></Header><hr />
